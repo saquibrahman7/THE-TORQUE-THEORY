@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>
+        THE TORQUE THEORY | Digital Pitstop For Your Car
+    </title>
+
+    <link rel="stylesheet" href="./style.css">
+
+</head>
+
+
+<body>
+
+
+<header class="topbar">
+
+    <div class="brand">
+
+        <img
+            src="torque-theory-logo.png"
+            alt="The Torque Theory Logo"
+            class="logo"
+        >
+
+        <div class="brand-text">
+
+            <h1>
+                THE TORQUE THEORY
+            </h1>
+
+            <p>
+                Digital Pitstop For Your Car
+            </p>
+
+            <span class="tagline">
+                Track. Maintain. Drive.
+            </span>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<main class="container">
+
+
+    <!-- DASHBOARD -->
+
+    <section class="dashboard">
+
+
+        <div class="stat-card">
+
+            <span>Vehicle</span>
+
+            <h2 id="dashboardVehicle">
+                —
+            </h2>
+
+        </div>
+
+
+
+        <div class="stat-card">
+
+            <span>Current KM</span>
+
+            <h2 id="dashboardKm">
+                —
+            </h2>
+
+        </div>
+
+
+
+        <div class="stat-card">
+
+            <span>Service Status</span>
+
+            <h2 id="dashboardService">
+                —
+            </h2>
+
+        </div>
+
+
+
+        <div class="stat-card">
+
+            <span>Total Spent</span>
+
+            <h2 id="dashboardSpent">
+                ₹0
+            </h2>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- VEHICLE INFORMATION -->
+
+    <section class="card">
+
+        <div class="section-title">
+
+            <div>
+
+                <h2>
+                    Vehicle Information
+                </h2>
+
+                <p>
+                    Enter your vehicle details
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="form-grid">
+
+
+            <div>
+
+                <label>
+                    Vehicle Name
+                </label>
+
+                <input
+                    id="vehicleName"
+                    placeholder="Example: Maruti Swift">
+
+            </div>
+
+
+
+            <div>
+
+                <label>
+                    Registration Number
+                </label>
+
+                <input
+                    id="registration"
+                    placeholder="Example: TS09AB1234">
+
+            </div>
+
+
+
+            <div>
+
+                <label>
+                    Current KM
+                </label>
+
+                <input
+                    id="currentKm"
+                    type="number"
+                    placeholder="52000">
+
+            </div>
+
+
+
+            <div>
+
+                <label>
+                    Last Service KM
+                </label>
+
+                <input
+                    id="lastService"
+                    type="number"
+                    placeholder="48000">
+
+            </div>
+
+
+
+            <div>
+
+                <label>
+                    Next Service KM
+                </label>
+
+                <input
+                    id="nextService"
+                    type="number"
+                    placeholder="53000">
+
+            </div>
+
+
+
+            <div>
+
+                <label>
+                    Insurance Expiry
+                </label>
+
+                <input
+                    id="insurance"
+                    type="date">
+
+            </div>
+
+
+
+            <div>
+
+                <label>
+                    PUC Expiry
+                </label>
+
+                <input
+                    id="puc"
+                    type="date">
+
+            </div>
+
+
+        </div>
+
+
+
+        <button
+            class="primary-btn"
+            onclick="saveVehicle()">
+
+            Save Vehicle Details
+
+        </button>
+
+
+    </section>
+
+
+
+
+    <!-- VEHICLE STATUS -->
+
+    <section class="card">
+
+        <div class="section-title">
+
+            <div>
+
+                <h2>
+                    Vehicle Status
+                </h2>
+
+                <p>
+                    Real-time maintenance information
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <div id="status">
+
+            <div class="empty">
+
+                No vehicle information saved yet.
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+
+    <!-- MAINTENANCE -->
+
+    <section class="card">
+
+        <div class="section-title">
+
+            <div>
+
+                <h2>
+                    Maintenance History
+                </h2>
+
+                <p>
+                    Record completed maintenance work
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="form-grid">
+
+
+            <div>
+
+                <label>
+                    Service Type
+                </label>
+
+                <input
+                    id="serviceType"
+                    placeholder="Engine Oil Change">
+
+            </div>
+
+
+
+            <div>
+
+                <label>
+                    Service Date
+                </label>
+
+                <input
+                    id="serviceDate"
+                    type="date">
+
+            </div>
+
+
+
+            <div>
+
+                <label>
+                    Service Cost
+                </label>
+
+                <input
+                    id="serviceCost"
+                    type="number"
+                    placeholder="1800">
+
+            </div>
+
+
+        </div>
+
+
+
+        <button
+            class="primary-btn"
+            onclick="addService()">
+
+            Add Maintenance Record
+
+        </button>
+
+
+
+        <div id="history"></div>
+
+
+    </section>
+
+
+
+
+    <!-- SYSTEM CONTROLS -->
+
+    <section class="card">
+
+        <h2>
+            System Controls
+        </h2>
+
+        <p>
+            Manage locally stored application data.
+        </p>
+
+
+        <button
+            class="danger-btn"
+            onclick="clearAllData()">
+
+            Clear All Data
+
+        </button>
+
+    </section>
+
+
+
+
+    <!-- ABOUT PROJECT -->
+
+    <section class="card project-info">
+
+        <h2>
+            About THE TORQUE THEORY
+        </h2>
+
+
+        <p>
+
+            THE TORQUE THEORY is a web-based digital pitstop
+            designed to help vehicle owners monitor servicing,
+            maintenance records, insurance expiry and PUC expiry
+            from a single dashboard.
+
+        </p>
+
+
+
+        <div class="tech-stack">
+
+            <span>HTML</span>
+
+            <span>CSS</span>
+
+            <span>JavaScript</span>
+
+            <span>LocalStorage</span>
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+
+<footer>
+
+    <p>
+        THE TORQUE THEORY — Digital Pitstop For Your Car
+    </p>
+
+</footer>
+
+
+
+<script src="script.js"></script>
+
+
+</body>
+
+</html>
