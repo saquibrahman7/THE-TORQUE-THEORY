@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Torque Garage | The Torque Theory</title>
+
+    <link
+        rel="stylesheet"
+        href="../style.css">
+
+    <style>
+
+        /* ================= TORQUE GARAGE ================= */
+
+        .garage-hero {
+            padding: 80px 5% 55px;
+
+            background:
+                radial-gradient(
+                    circle at 80% 40%,
+                    rgba(214,169,40,.12),
+                    transparent 35%
+                );
+        }
+
+        .garage-hero-inner {
+            max-width: 1180px;
+            margin: auto;
+        }
+
+        .garage-hero h2 {
+            font-size: clamp(42px, 7vw, 76px);
+            line-height: .95;
+            letter-spacing: -3px;
+            margin-top: 10px;
+        }
+
+        .garage-hero h2 span {
+            color: var(--accent);
+        }
+
+        .garage-description {
+            max-width: 600px;
+            margin-top: 22px;
+            color: var(--muted);
+        }
+
+
+        /* SEARCH */
+
+        .garage-content {
+            width: min(1180px, 90%);
+            margin: auto;
+            padding: 45px 0 90px;
+        }
+
+        .search-box {
+            width: 100%;
+
+            padding: 16px 18px;
+
+            background: var(--surface);
+
+            border: 1px solid var(--border);
+            border-radius: 10px;
+
+            color: white;
+
+            outline: none;
+
+            font-size: 14px;
+        }
+
+        .search-box:focus {
+            border-color: var(--accent);
+        }
+
+
+        /* CATEGORIES */
+
+        .categories {
+            display: flex;
+            gap: 10px;
+
+            margin: 25px 0 45px;
+
+            flex-wrap: wrap;
+        }
+
+        .category {
+            padding: 9px 15px;
+
+            border: 1px solid var(--border);
+            border-radius: 50px;
+
+            background: var(--surface);
+
+            color: var(--muted);
+
+            font-size: 11px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: .2s;
+        }
+
+        .category:hover,
+        .category.active {
+            color: #080909;
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+
+        /* SECTION */
+
+        .product-section-title {
+            margin-bottom: 20px;
+        }
+
+        .product-section-title h2 {
+            font-size: 28px;
+        }
+
+
+        /* PRODUCTS */
+
+        .products-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 15px;
+        }
+
+        .product-card {
+            background: var(--surface);
+
+            border: 1px solid var(--border);
+
+            border-radius: 13px;
+
+            overflow: hidden;
+
+            transition: .25s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+
+            border-color: var(--accent);
+        }
+
+        .product-image {
+            height: 190px;
+
+            display: grid;
+            place-items: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #161919,
+                    #0c0e0e
+                );
+
+            font-size: 60px;
+        }
+
+        .product-info {
+            padding: 18px;
+        }
+
+        .product-category {
+            color: var(--accent);
+
+            font-size: 9px;
+            font-weight: 800;
+
+            letter-spacing: 2px;
+        }
+
+        .product-info h3 {
+            margin-top: 7px;
+
+            font-size: 16px;
+        }
+
+        .product-info p {
+            margin-top: 6px;
+
+            color: var(--muted);
+
+            font-size: 11px;
+        }
+
+        .product-bottom {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            margin-top: 18px;
+        }
+
+        .product-price {
+            font-size: 17px;
+            font-weight: 800;
+        }
+
+        .product-btn {
+            padding: 8px 12px;
+
+            background: var(--accent);
+
+            border: 0;
+            border-radius: 6px;
+
+            color: #080909;
+
+            font-size: 9px;
+            font-weight: 800;
+
+            cursor: pointer;
+        }
+
+
+        /* MOBILE */
+
+        @media (max-width: 900px) {
+
+            .products-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 550px) {
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .garage-hero {
+                padding-top: 55px;
+            }
+
+            .garage-hero h2 {
+                font-size: 45px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= HEADER ================= -->
+
+<header class="topbar">
+
+    <div class="brand">
+
+        <img
+            src="../torque-theory-logo.png"
+            alt="Torque Theory Logo">
+
+        <div>
+
+            <h1>THE TORQUE THEORY</h1>
+
+            <span>
+                YOUR DIGITAL GARAGE
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <button
+        class="menu-btn"
+        onclick="toggleMenu()">
+
+        ☰
+
+    </button>
+
+
+    <nav id="mainNav">
+
+        <a href="../index.html">
+            Dashboard
+        </a>
+
+        <a href="../index.html#garage">
+            My Garage
+        </a>
+
+        <a href="../index.html#maintenance">
+            Maintenance
+        </a>
+
+        <a href="../index.html#tools">
+            Tools
+        </a>
+
+    </nav>
+
+</header>
+
+
+<!-- ================= HERO ================= -->
+
+<section class="garage-hero">
+
+    <div class="garage-hero-inner">
+
+        <p class="eyebrow">
+            TORQUE THEORY MARKETPLACE
+        </p>
+
+        <h2>
+            TORQUE<br>
+            <span>GARAGE.</span>
+        </h2>
+
+        <p class="garage-description">
+
+            Car products, accessories and gear
+            selected for people who actually care
+            about their cars.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ================= PRODUCTS ================= -->
+
+<main class="garage-content">
+
+
+    <!-- SEARCH -->
+
+    <input
+        type="search"
+        id="productSearch"
+        class="search-box"
+        placeholder="Search products...">
+
+
+    <!-- CATEGORIES -->
+
+    <div class="categories">
+
+        <button
+            class="category active"
+            onclick="filterProducts('all', this)">
+
+            ALL
+
+        </button>
+
+        <button
+            class="category"
+            onclick="filterProducts('interior', this)">
+
+            INTERIOR
+
+        </button>
+
+        <button
+            class="category"
+            onclick="filterProducts('exterior', this)">
+
+            EXTERIOR
+
+        </button>
+
+        <button
+            class="category"
+            onclick="filterProducts('electronics', this)">
+
+            ELECTRONICS
+
+        </button>
+
+        <button
+            class="category"
+            onclick="filterProducts('cleaning', this)">
+
+            CLEANING
+
+        </button>
+
+        <button
+            class="category"
+            onclick="filterProducts('performance', this)">
+
+            PERFORMANCE
+
+        </button>
+
+        <button
+            class="category"
+            onclick="filterProducts('tools', this)">
+
+            TOOLS
+
+        </button>
+
+    </div>
+
+
+    <!-- PRODUCT TITLE -->
+
+    <div class="product-section-title">
+
+        <p class="eyebrow">
+            FEATURED
+        </p>
+
+        <h2>
+            CAR ESSENTIALS
+        </h2>
+
+    </div>
+
+
+    <!-- PRODUCT GRID -->
+
+    <div
+        class="products-grid"
+        id="productsGrid">
+
+
+        <!-- PRODUCT 1 -->
+
+        <article
+            class="product-card"
+            data-category="interior"
+            data-name="car phone holder">
+
+            <div class="product-image">
+                📱
+            </div>
+
+            <div class="product-info">
+
+                <span class="product-category">
+                    INTERIOR
+                </span>
+
+                <h3>
+                    Magnetic Car Phone Holder
+                </h3>
+
+                <p>
+                    Secure dashboard or AC mount
+                    for everyday driving.
+                </p>
+
+                <div class="product-bottom">
+
+                    <span class="product-price">
+                        ₹599
+                    </span>
+
+                    <button
+                        class="product-btn"
+                        onclick="productComingSoon()">
+
+                        VIEW
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- PRODUCT 2 -->
+
+        <article
+            class="product-card"
+            data-category="electronics"
+            data-name="dashcam">
+
+            <div class="product-image">
+                📹
+            </div>
+
+            <div class="product-info">
+
+                <span class="product-category">
+                    ELECTRONICS
+                </span>
+
+                <h3>
+                    Full HD Dashcam
+                </h3>
+
+                <p>
+                    Record your drives and
+                    protect yourself on the road.
+                </p>
+
+                <div class="product-bottom">
+
+                    <span class="product-price">
+                        ₹2,999
+                    </span>
+
+                    <button
+                        class="product-btn"
+                        onclick="productComingSoon()">
+
+                        VIEW
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- PRODUCT 3 -->
+
+        <article
+            class="product-card"
+            data-category="cleaning"
+            data-name="car cleaning kit">
+
+            <div class="product-image">
+                🧽
+            </div>
+
+            <div class="product-info">
+
+                <span class="product-category">
+                    CLEANING
+                </span>
+
+                <h3>
+                    Car Cleaning Kit
+                </h3>
+
+                <p>
+                    Interior and exterior
+                    cleaning essentials.
+                </p>
+
+                <div class="product-bottom">
+
+                    <span class="product-price">
+                        ₹899
+                    </span>
+
+                    <button
+                        class="product-btn"
+                        onclick="productComingSoon()">
+
+                        VIEW
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- PRODUCT 4 -->
+
+        <article
+            class="product-card"
+            data-category="exterior"
+            data-name="microfiber cloth">
+
+            <div class="product-image">
+                🧴
+            </div>
+
+            <div class="product-info">
+
+                <span class="product-category">
+                    EXTERIOR
+                </span>
+
+                <h3>
+                    Premium Microfiber Kit
+                </h3>
+
+                <p>
+                    Scratch-safe microfiber
+                    towels for detailing.
+                </p>
+
+                <div class="product-bottom">
+
+                    <span class="product-price">
+                        ₹449
+                    </span>
+
+                    <button
+                        class="product-btn"
+                        onclick="productComingSoon()">
+
+                        VIEW
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- PRODUCT 5 -->
+
+        <article
+            class="product-card"
+            data-category="tools"
+            data-name="tyre inflator">
+
+            <div class="product-image">
+                🛞
+            </div>
+
+            <div class="product-info">
+
+                <span class="product-category">
+                    TOOLS
+                </span>
+
+                <h3>
+                    Digital Tyre Inflator
+                </h3>
+
+                <p>
+                    Portable compressor with
+                    digital pressure display.
+                </p>
+
+                <div class="product-bottom">
+
+                    <span class="product-price">
+                        ₹1,499
+                    </span>
+
+                    <button
+                        class="product-btn"
+                        onclick="productComingSoon()">
+
+                        VIEW
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- PRODUCT 6 -->
+
+        <article
+            class="product-card"
+            data-category="performance"
+            data-name="air filter">
+
+            <div class="product-image">
+                🏎️
+            </div>
+
+            <div class="product-info">
+
+                <span class="product-category">
+                    PERFORMANCE
+                </span>
+
+                <h3>
+                    Performance Air Filter
+                </h3>
+
+                <p>
+                    Upgrade your intake system
+                    with a reusable filter.
+                </p>
+
+                <div class="product-bottom">
+
+                    <span class="product-price">
+                        ₹1,799
+                    </span>
+
+                    <button
+                        class="product-btn"
+                        onclick="productComingSoon()">
+
+                        VIEW
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- PRODUCT 7 -->
+
+        <article
+            class="product-card"
+            data-category="electronics"
+            data-name="car charger">
+
+            <div class="product-image">
+                🔌
+            </div>
+
+            <div class="product-info">
+
+                <span class="product-category">
+                    ELECTRONICS
+                </span>
+
+                <h3>
+                    Dual USB-C Car Charger
+                </h3>
+
+                <p>
+                    Fast charging for phones
+                    and other devices.
+                </p>
+
+                <div class="product-bottom">
+
+                    <span class="product-price">
+                        ₹799
+                    </span>
+
+                    <button
+                        class="product-btn"
+                        onclick="productComingSoon()">
+
+                        VIEW
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- PRODUCT 8 -->
+
+        <article
+            class="product-card"
+            data-category="tools"
+            data-name="emergency kit">
+
+            <div class="product-image">
+                🧰
+            </div>
+
+            <div class="product-info">
+
+                <span class="product-category">
+                    TOOLS
+                </span>
+
+                <h3>
+                    Roadside Emergency Kit
+                </h3>
+
+                <p>
+                    Essential equipment for
+                    unexpected roadside problems.
+                </p>
+
+                <div class="product-bottom">
+
+                    <span class="product-price">
+                        ₹1,199
+                    </span>
+
+                    <button
+                        class="product-btn"
+                        onclick="productComingSoon()">
+
+                        VIEW
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+
+    </div>
+
+</main>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <img
+        src="../torque-theory-logo.png"
+        alt="Torque Theory">
+
+    <h3>
+        THE TORQUE THEORY
+    </h3>
+
+    <p>
+        BUILT BY AUTOHEADS.
+    </p>
+
+    <div class="footer-line"></div>
+
+    <small>
+        © 2026 The Torque Theory
+    </small>
+
+</footer>
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+function toggleMenu() {
+
+    const nav =
+        document.getElementById("mainNav");
+
+    nav.classList.toggle("show");
+
+}
+
+
+function filterProducts(category, button) {
+
+    const products =
+        document.querySelectorAll(
+            ".product-card"
+        );
+
+    const buttons =
+        document.querySelectorAll(
+            ".category"
+        );
+
+
+    buttons.forEach(btn => {
+
+        btn.classList.remove("active");
+
+    });
+
+
+    button.classList.add("active");
+
+
+    products.forEach(product => {
+
+        if (
+            category === "all" ||
+            product.dataset.category === category
+        ) {
+
+            product.style.display = "";
+
+        } else {
+
+            product.style.display = "none";
+
+        }
+
+    });
+
+}
+
+
+function productComingSoon() {
+
+    alert(
+        "Product links are coming soon.\n\n" +
+        "Torque Garage will soon connect to real products."
+    );
+
+}
+
+
+/* SEARCH */
+
+document
+    .getElementById("productSearch")
+    .addEventListener("input", function () {
+
+        const query =
+            this.value.toLowerCase().trim();
+
+
+        document
+            .querySelectorAll(".product-card")
+            .forEach(product => {
+
+                const name =
+                    product.dataset.name
+                    .toLowerCase();
+
+                const text =
+                    product.innerText
+                    .toLowerCase();
+
+
+                if (
+                    name.includes(query) ||
+                    text.includes(query)
+                ) {
+
+                    product.style.display = "";
+
+                } else {
+
+                    product.style.display = "none";
+
+                }
+
+            });
+
+    });
+
+</script>
+
+
+</body>
+</html>
