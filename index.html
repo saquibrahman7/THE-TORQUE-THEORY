@@ -11,345 +11,528 @@
 
 <body>
 
-    <!-- ================= HEADER ================= -->
+<header class="topbar">
 
-    <header class="topbar">
+    <div class="brand">
+        <img src="torque-theory-logo.png" alt="Torque Theory Logo">
 
-        <div class="brand">
-            <img src="torque-theory-logo.png" alt="Torque Theory">
-            <div>
-                <h1>THE TORQUE THEORY</h1>
-                <span>YOUR DIGITAL GARAGE</span>
-            </div>
+        <div>
+            <h1>THE TORQUE THEORY</h1>
+            <span>YOUR DIGITAL GARAGE</span>
+        </div>
+    </div>
+
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+
+    <nav id="mainNav">
+        <a href="#dashboard" class="active">Dashboard</a>
+        <a href="#garage">My Garage</a>
+        <a href="#maintenance">Maintenance</a>
+        <a href="#tools">Tools</a>
+    </nav>
+
+</header>
+
+
+<main>
+
+<!-- ================= DASHBOARD ================= -->
+
+<section id="dashboard" class="hero">
+
+    <div class="hero-content">
+
+        <p class="eyebrow">
+            THE DIGITAL GARAGE FOR CAR OWNERS
+        </p>
+
+        <h2>
+            KNOW YOUR CAR.<br>
+            <span>OWN THE DRIVE.</span>
+        </h2>
+
+        <p class="hero-text">
+            Track maintenance, monitor your vehicle,
+            calculate costs and explore everything
+            your car has to offer.
+        </p>
+
+        <div class="hero-buttons">
+
+            <button onclick="scrollToSection('garage')">
+                MY GARAGE
+            </button>
+
+            <button
+                class="secondary-btn"
+                onclick="scrollToSection('tools')">
+                EXPLORE TOOLS
+            </button>
+
         </div>
 
-        <button class="menu-btn" onclick="toggleMenu()">☰</button>
+    </div>
 
-        <nav id="mainNav">
-            <a href="index.html" class="active">Dashboard</a>
-            <a href="#garage">My Garage</a>
-            <a href="#tools">Tools</a>
-            <a href="#explore">Explore</a>
-        </nav>
-
-    </header>
+</section>
 
 
-    <!-- ================= HERO ================= -->
+<!-- ================= MY GARAGE ================= -->
 
-    <main>
+<section id="garage" class="section">
 
-        <section class="hero">
+    <div class="section-heading">
 
-            <div class="hero-content">
+        <div>
+            <p class="eyebrow">YOUR VEHICLE</p>
+            <h2>MY GARAGE</h2>
+        </div>
 
-                <p class="eyebrow">THE DIGITAL GARAGE FOR CAR OWNERS</p>
+    </div>
 
-                <h2>
-                    KNOW YOUR CAR.<br>
-                    <span>OWN THE DRIVE.</span>
-                </h2>
 
-                <p class="hero-text">
-                    Track maintenance, calculate costs, compare cars,
-                    understand performance and manage your vehicle —
-                    all in one place.
+    <!-- DASHBOARD VEHICLE CARD -->
+
+    <div class="vehicle-card">
+
+        <div class="vehicle-info">
+
+            <div class="vehicle-icon">
+                🚗
+            </div>
+
+            <div>
+
+                <p class="label">
+                    CURRENT VEHICLE
                 </p>
 
-                <div class="hero-buttons">
-                    <button onclick="scrollToSection('garage')">
-                        MY GARAGE
-                    </button>
+                <h3 id="dashboardVehicleName">
+                    YOUR VEHICLE
+                </h3>
 
-                    <button class="secondary-btn"
-                            onclick="scrollToSection('tools')">
-                        EXPLORE TOOLS
-                    </button>
-                </div>
+                <p id="dashboardRegistration">
+                    Add your vehicle below.
+                </p>
 
             </div>
 
-        </section>
+        </div>
 
 
-        <!-- ================= GARAGE ================= -->
+        <div class="vehicle-stats">
 
-        <section id="garage" class="section">
+            <div class="stat">
 
-            <div class="section-heading">
-                <div>
-                    <p class="eyebrow">YOUR VEHICLE</p>
-                    <h2>MY GARAGE</h2>
-                </div>
+                <span>CURRENT KM</span>
 
-                <button class="small-btn" onclick="addVehicle()">
-                    + ADD VEHICLE
-                </button>
-            </div>
-
-
-            <div class="vehicle-card">
-
-                <div class="vehicle-info">
-
-                    <div class="vehicle-icon">
-                        🚗
-                    </div>
-
-                    <div>
-                        <p class="label">CURRENT VEHICLE</p>
-
-                        <h3 id="vehicleName">
-                            YOUR VEHICLE
-                        </h3>
-
-                        <p id="vehicleDetails">
-                            Add your vehicle to get started.
-                        </p>
-                    </div>
-
-                </div>
-
-
-                <div class="vehicle-stats">
-
-                    <div class="stat">
-                        <span>CURRENT KM</span>
-                        <strong id="currentKm">—</strong>
-                    </div>
-
-                    <div class="stat">
-                        <span>SERVICE</span>
-                        <strong id="serviceStatus">—</strong>
-                    </div>
-
-                    <div class="stat">
-                        <span>TOTAL SPENT</span>
-                        <strong id="totalSpent">—</strong>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ================= QUICK ACTIONS ================= -->
-
-        <section id="tools" class="section">
-
-            <div class="section-heading">
-
-                <div>
-                    <p class="eyebrow">FAST ACCESS</p>
-                    <h2>QUICK TOOLS</h2>
-                </div>
+                <strong id="dashboardCurrentKm">
+                    —
+                </strong>
 
             </div>
 
 
-            <div class="tools-grid">
+            <div class="stat">
 
-                <a href="pages/maintenance.html" class="tool-card">
+                <span>SERVICE</span>
 
-                    <div class="tool-icon">🔧</div>
-
-                    <div>
-                        <h3>Maintenance</h3>
-                        <p>Track services & repairs.</p>
-                    </div>
-
-                    <span class="arrow">→</span>
-
-                </a>
-
-
-                <a href="pages/performance.html" class="tool-card">
-
-                    <div class="tool-icon">🏎️</div>
-
-                    <div>
-                        <h3>Performance Lab</h3>
-                        <p>Explore your car's numbers.</p>
-                    </div>
-
-                    <span class="arrow">→</span>
-
-                </a>
-
-
-                <a href="pages/tyres.html" class="tool-card">
-
-                    <div class="tool-icon">🛞</div>
-
-                    <div>
-                        <h3>Tyre Lab</h3>
-                        <p>Compare tyre sizes.</p>
-                    </div>
-
-                    <span class="arrow">→</span>
-
-                </a>
-
-
-                <a href="pages/calculators.html" class="tool-card">
-
-                    <div class="tool-icon">💰</div>
-
-                    <div>
-                        <h3>Cost Calculator</h3>
-                        <p>Fuel, trips & modifications.</p>
-                    </div>
-
-                    <span class="arrow">→</span>
-
-                </a>
-
-
-                <a href="pages/compare.html" class="tool-card">
-
-                    <div class="tool-icon">⚔️</div>
-
-                    <div>
-                        <h3>Compare Cars</h3>
-                        <p>Put two cars head-to-head.</p>
-                    </div>
-
-                    <span class="arrow">→</span>
-
-                </a>
-
-
-                <a href="pages/used-car.html" class="tool-card">
-
-                    <div class="tool-icon">🔍</div>
-
-                    <div>
-                        <h3>Used-Car Inspector</h3>
-                        <p>Check before you buy.</p>
-                    </div>
-
-                    <span class="arrow">→</span>
-
-                </a>
-
-            </div>
-
-        </section>
-
-
-        <!-- ================= EXPLORE ================= -->
-
-        <section id="explore" class="section">
-
-            <div class="section-heading">
-
-                <div>
-                    <p class="eyebrow">DISCOVER</p>
-                    <h2>TORQUE THEORY</h2>
-                </div>
+                <strong id="dashboardServiceStatus">
+                    —
+                </strong>
 
             </div>
 
 
-            <div class="explore-grid">
+            <div class="stat">
 
-                <a href="pages/products.html" class="explore-card">
+                <span>TOTAL SPENT</span>
 
-                    <span>🛒</span>
-
-                    <div>
-                        <h3>Torque Garage</h3>
-                        <p>Car products, accessories & gear.</p>
-                    </div>
-
-                </a>
-
-
-                <a href="pages/diy.html" class="explore-card">
-
-                    <span>🧰</span>
-
-                    <div>
-                        <h3>DIY Garage</h3>
-                        <p>Learn basic car maintenance.</p>
-                    </div>
-
-                </a>
-
-
-                <a href="pages/database.html" class="explore-card">
-
-                    <span>📚</span>
-
-                    <div>
-                        <h3>Car Database</h3>
-                        <p>Explore cars, engines & specifications.</p>
-                    </div>
-
-                </a>
+                <strong id="dashboardTotalSpent">
+                    ₹0
+                </strong>
 
             </div>
 
-        </section>
+        </div>
+
+    </div>
 
 
-        <!-- ================= FOOTER ================= -->
+    <!-- VEHICLE FORM -->
 
-        <footer>
+    <div class="garage-form">
 
-            <img src="torque-theory-logo.png" alt="Torque Theory">
+        <div class="section-heading">
 
-            <h3>THE TORQUE THEORY</h3>
+            <div>
+                <p class="eyebrow">
+                    VEHICLE PROFILE
+                </p>
 
-            <p>
-                BUILT BY AUTOHEADS.
+                <h2>VEHICLE DETAILS</h2>
+            </div>
+
+        </div>
+
+
+        <div class="form-grid">
+
+            <div class="form-group">
+
+                <label for="vehicleName">
+                    Vehicle Name
+                </label>
+
+                <input
+                    type="text"
+                    id="vehicleName"
+                    placeholder="Example: Maruti Suzuki Swift">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="registration">
+                    Registration Number
+                </label>
+
+                <input
+                    type="text"
+                    id="registration"
+                    placeholder="Example: TS09AB1234">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="vehicleCurrentKm">
+                    Current KM
+                </label>
+
+                <input
+                    type="number"
+                    id="vehicleCurrentKm"
+                    placeholder="53003">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="lastService">
+                    Last Service KM
+                </label>
+
+                <input
+                    type="number"
+                    id="lastService"
+                    placeholder="50000">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="nextService">
+                    Next Service KM
+                </label>
+
+                <input
+                    type="number"
+                    id="nextService"
+                    placeholder="55000">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="insurance">
+                    Insurance Expiry
+                </label>
+
+                <input
+                    type="date"
+                    id="insurance">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="puc">
+                    PUC Expiry
+                </label>
+
+                <input
+                    type="date"
+                    id="puc">
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="save-btn"
+            onclick="saveVehicle()">
+
+            SAVE VEHICLE
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ================= MAINTENANCE ================= -->
+
+<section id="maintenance" class="section">
+
+    <div class="section-heading">
+
+        <div>
+            <p class="eyebrow">
+                SERVICE RECORDS
             </p>
 
-            <div class="footer-line"></div>
+            <h2>MAINTENANCE</h2>
+        </div>
 
-            <small>
-                © 2026 The Torque Theory
-            </small>
-
-        </footer>
-
-    </main>
+    </div>
 
 
-    <!-- ================= JAVASCRIPT ================= -->
+    <div class="maintenance-form">
 
-    <script src="script.js"></script>
+        <div class="form-grid">
 
-    <script>
+            <div class="form-group">
 
-        function scrollToSection(id) {
-            document.getElementById(id)?.scrollIntoView({
-                behavior: "smooth"
-            });
-        }
+                <label for="serviceType">
+                    Service / Repair
+                </label>
 
+                <input
+                    type="text"
+                    id="serviceType"
+                    placeholder="Example: Engine Oil">
 
-        function toggleMenu() {
-
-            const nav = document.getElementById("mainNav");
-
-            nav.classList.toggle("show");
-
-        }
+            </div>
 
 
-        function addVehicle() {
+            <div class="form-group">
 
-            alert(
-                "Vehicle management is coming next.\n\n" +
-                "We'll connect your garage system here."
-            );
+                <label for="serviceDate">
+                    Date
+                </label>
 
-        }
+                <input
+                    type="date"
+                    id="serviceDate">
 
-    </script>
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="serviceCost">
+                    Cost
+                </label>
+
+                <input
+                    type="number"
+                    id="serviceCost"
+                    placeholder="₹">
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="save-btn"
+            onclick="addService()">
+
+            ADD SERVICE
+
+        </button>
+
+    </div>
+
+
+    <div class="history-section">
+
+        <p class="eyebrow">
+            RECORDS
+        </p>
+
+        <h3>SERVICE HISTORY</h3>
+
+        <div id="history">
+
+            <div class="empty">
+                No maintenance records yet.
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= TOOLS ================= -->
+
+<section id="tools" class="section">
+
+    <div class="section-heading">
+
+        <div>
+
+            <p class="eyebrow">
+                COMING NEXT
+            </p>
+
+            <h2>TORQUE TOOLS</h2>
+
+        </div>
+
+    </div>
+
+
+    <div class="tools-grid">
+
+        <a href="#" class="tool-card">
+
+            <div class="tool-icon">
+                🏎️
+            </div>
+
+            <div>
+                <h3>Performance Lab</h3>
+                <p>Explore your car's performance.</p>
+            </div>
+
+            <span class="arrow">→</span>
+
+        </a>
+
+
+        <a href="#" class="tool-card">
+
+            <div class="tool-icon">
+                🛞
+            </div>
+
+            <div>
+                <h3>Tyre Lab</h3>
+                <p>Tyres, sizes and comparisons.</p>
+            </div>
+
+            <span class="arrow">→</span>
+
+        </a>
+
+
+        <a href="#" class="tool-card">
+
+            <div class="tool-icon">
+                💰
+            </div>
+
+            <div>
+                <h3>Cost Calculator</h3>
+                <p>Fuel, ownership and modification costs.</p>
+            </div>
+
+            <span class="arrow">→</span>
+
+        </a>
+
+
+        <a href="#" class="tool-card">
+
+            <div class="tool-icon">
+                ⚔️
+            </div>
+
+            <div>
+                <h3>Compare Cars</h3>
+                <p>Compare cars side-by-side.</p>
+            </div>
+
+            <span class="arrow">→</span>
+
+        </a>
+
+
+        <a href="#" class="tool-card">
+
+            <div class="tool-icon">
+                🔍
+            </div>
+
+            <div>
+                <h3>Used-Car Inspector</h3>
+                <p>Inspect a used car before buying.</p>
+            </div>
+
+            <span class="arrow">→</span>
+
+        </a>
+
+
+        <a href="#" class="tool-card">
+
+            <div class="tool-icon">
+                🛒
+            </div>
+
+            <div>
+                <h3>Torque Garage</h3>
+                <p>Products, accessories and gear.</p>
+            </div>
+
+            <span class="arrow">→</span>
+
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <img
+        src="torque-theory-logo.png"
+        alt="Torque Theory">
+
+    <h3>
+        THE TORQUE THEORY
+    </h3>
+
+    <p>
+        BUILT BY AUTOHEADS.
+    </p>
+
+    <div class="footer-line"></div>
+
+    <small>
+        © 2026 The Torque Theory
+    </small>
+
+</footer>
+
+</main>
+
+
+<script src="script.js"></script>
 
 </body>
 </html>
