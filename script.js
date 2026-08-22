@@ -1,100 +1,33 @@
 /* =========================================================
-   THE TORQUE THEORY — V2
-   GARAGE / DASHBOARD SYSTEM
+   THE TORQUE THEORY — GARAGE SYSTEM
    ========================================================= */
 
 
-/* ================= VEHICLE DATA ================= */
+/* ================= DATA ================= */
 
 function getVehicle() {
-
     const data = localStorage.getItem("vehicle");
 
     if (!data) return null;
 
     try {
         return JSON.parse(data);
-    } catch (error) {
-        console.error("Vehicle data error:", error);
+    } catch {
         return null;
     }
 }
 
 
-/* ================= SERVICE HISTORY ================= */
-
 function getHistory() {
-
     const data = localStorage.getItem("history");
 
     if (!data) return [];
 
     try {
         return JSON.parse(data);
-    } catch (error) {
-        console.error("History data error:", error);
+    } catch {
         return [];
     }
-}
-
-
-/* ================= DOCUMENT STATUS ================= */
-
-function getDocumentStatus(expiryDate) {
-
-    if (!expiryDate) {
-        return {
-            text: "DATE NOT SET",
-            className: "status-soon"
-        };
-    }
-
-    const today = new Date();
-
-    today.setHours(0, 0, 0, 0);
-
-    const expiry = new Date(expiryDate);
-
-    expiry.setHours(0, 0, 0, 0);
-
-    const daysRemaining = Math.ceil(
-        (expiry - today) /
-        (1000 * 60 * 60 * 24)
-    );
-
-
-    if (daysRemaining < 0) {
-
-        return {
-            text: "EXPIRED",
-            className: "status-due"
-        };
-
-    }
-
-
-    if (daysRemaining <= 30) {
-
-        return {
-            text:
-                "EXPIRING SOON — " +
-                daysRemaining +
-                " days remaining",
-
-            className: "status-soon"
-        };
-
-    }
-
-
-    return {
-        text:
-            "VALID — " +
-            daysRemaining +
-            " days remaining",
-
-        className: "status-safe"
-    };
 }
 
 
@@ -103,50 +36,36 @@ function getDocumentStatus(expiryDate) {
 function getServiceStatus(vehicle) {
 
     if (!vehicle) {
-
         return {
-            text: "NO VEHICLE",
+            text: "NOT SET",
             className: "status-soon"
         };
-
     }
-
 
     const remaining =
         Number(vehicle.nextService) -
         Number(vehicle.currentKm);
 
-
     if (remaining <= 0) {
 
         return {
-            text: "SERVICE DUE",
+            text: "DUE",
             className: "status-due"
         };
 
     }
 
-
     if (remaining <= 1000) {
 
         return {
-            text:
-                "SERVICE SOON — " +
-                remaining +
-                " KM",
-
+            text: "SOON",
             className: "status-soon"
         };
 
     }
 
-
     return {
-        text:
-            "SERVICE SAFE — " +
-            remaining +
-            " KM",
-
+        text: "SAFE",
         className: "status-safe"
     };
 }
@@ -158,349 +77,46 @@ function calculateTotalSpent() {
 
     const history = getHistory();
 
-    let total = 0;
-
-    history.forEach(service => {
-
-        total += Number(service.cost) || 0;
-
-    });
-
-    return total;
+    return history.reduce(
+        (total, service) =>
+            total + (Number(service.cost) || 0),
+        0
+    );
 }
 
 
-/* ================= UPDATE DASHBOARD ================= */
-
-function updateDashboard() {
-
-    const vehicle = getVehicle();
-
-
-    /* ---------- Vehicle ---------- */
-
-    const vehicleName =
-        document.getElementById("vehicleName");
-
-    const vehicleDetails =
-        document.getElementById("vehicleDetails");
-
-    const currentKm =
-        document.getElementById("currentKm");
-
-    const serviceStatus =
-        document.getElementById("serviceStatus");
-
-    const totalSpent =
-        document.getElementById("totalSpent");
-
-
-    if (!vehicle) {
-
-        if (vehicleName) {
-
-            vehicleName.textContent =
-                "YOUR VEHICLE";
-
-        }
-
-
-        if (vehicleDetails) {
-
-            vehicleDetails.textContent =
-                "Add your vehicle to get started.";
-
-        }
-
-
-        if (currentKm) {
-
-            currentKm.textContent =
-                "—";
-
-        }
-
-
-        if (serviceStatus) {
-
-            serviceStatus.textContent =
-                "—";
-
-        }
-
-
-        if (totalSpent) {
-
-            totalSpent.textContent =
-                "₹0";
-
-        }
-
-        return;
-    }
-
-
-    /* ---------- Vehicle Name ---------- */
-
-    if (vehicleName) {
-
-        vehicleName.textContent =
-            vehicle.name;
-
-    }
-
-
-    /* ---------- Vehicle Details ---------- */
-
-    if (vehicleDetails) {
-
-        vehicleDetails.textContent =
-            vehicle.registration;
-
-    }
-
-
-    /* ---------- KM ---------- */
-
-    if (currentKm) {
-
-        currentKm.textContent =
-            Number(vehicle.currentKm).toLocaleString("en-IN") +
-            " KM";
-
-    }
-
-
-    /* ---------- Service ---------- */
-
-    if (serviceStatus) {
-
-        const status =
-            getServiceStatus(vehicle);
-
-        serviceStatus.textContent =
-            status.text.replace(
-                "SERVICE ",
-                ""
-            );
-
-    }
-
-
-    /* ---------- Total Spent ---------- */
-
-    if (totalSpent) {
-
-        totalSpent.textContent =
-            "₹" +
-            calculateTotalSpent()
-                .toLocaleString("en-IN");
-
-    }
-}
-
-
-/* ================= OLD DASHBOARD COMPATIBILITY ================= */
-
-function updateOldDashboard() {
-
-    const vehicle = getVehicle();
-
-    const dashboardVehicle =
-        document.getElementById("dashboardVehicle");
-
-    const dashboardKm =
-        document.getElementById("dashboardKm");
-
-    const dashboardService =
-        document.getElementById("dashboardService");
-
-    const dashboardSpent =
-        document.getElementById("dashboardSpent");
-
-
-    if (vehicle) {
-
-        if (dashboardVehicle) {
-
-            dashboardVehicle.textContent =
-                vehicle.name;
-
-        }
-
-
-        if (dashboardKm) {
-
-            dashboardKm.textContent =
-                vehicle.currentKm +
-                " KM";
-
-        }
-
-
-        if (dashboardService) {
-
-            const status =
-                getServiceStatus(vehicle);
-
-            dashboardService.textContent =
-                status.text;
-
-        }
-
-    }
-
-
-    if (dashboardSpent) {
-
-        dashboardSpent.textContent =
-            "₹" +
-            calculateTotalSpent()
-                .toLocaleString("en-IN");
-
-    }
-}
-
-
-/* ================= OLD STATUS COMPATIBILITY ================= */
-
-function displayStatus() {
-
-    const vehicle = getVehicle();
-
-    const statusContainer =
-        document.getElementById("status");
-
-
-    if (!vehicle || !statusContainer) {
-        return;
-    }
-
-
-    const service =
-        getServiceStatus(vehicle);
-
-    const insurance =
-        getDocumentStatus(
-            vehicle.insurance
-        );
-
-    const puc =
-        getDocumentStatus(
-            vehicle.puc
-        );
-
-
-    statusContainer.innerHTML = `
-
-        <div class="status-box">
-
-            <strong>Vehicle:</strong>
-
-            ${vehicle.name}
-
-        </div>
-
-
-        <div class="status-box">
-
-            <strong>Registration:</strong>
-
-            ${vehicle.registration}
-
-        </div>
-
-
-        <div class="service-indicator ${service.className}">
-
-            ${service.text}
-
-        </div>
-
-
-        <div class="service-indicator ${insurance.className}">
-
-            INSURANCE:
-            ${insurance.text}
-
-        </div>
-
-
-        <div class="service-indicator ${puc.className}">
-
-            PUC:
-            ${puc.text}
-
-        </div>
-
-    `;
-}
-
-
-/* ================= OLD FORM SUPPORT ================= */
+/* ================= SAVE VEHICLE ================= */
 
 function saveVehicle() {
-
-    const nameInput =
-        document.getElementById("vehicleName");
-
-    const registrationInput =
-        document.getElementById("registration");
-
-    const currentKmInput =
-        document.getElementById("currentKm");
-
-    const lastServiceInput =
-        document.getElementById("lastService");
-
-    const nextServiceInput =
-        document.getElementById("nextService");
-
-    const insuranceInput =
-        document.getElementById("insurance");
-
-    const pucInput =
-        document.getElementById("puc");
-
-
-    /*
-       If the new dashboard is being used,
-       there is no form to save yet.
-    */
-
-    if (!nameInput || !registrationInput) {
-        return;
-    }
-
 
     const vehicle = {
 
         name:
-            nameInput.value,
+            document.getElementById("vehicleName").value.trim(),
 
         registration:
-            registrationInput.value,
+            document.getElementById("registration").value.trim(),
 
         currentKm:
             Number(
-                currentKmInput?.value || 0
+                document.getElementById("vehicleCurrentKm").value
             ),
 
         lastService:
             Number(
-                lastServiceInput?.value || 0
+                document.getElementById("lastService").value
             ),
 
         nextService:
             Number(
-                nextServiceInput?.value || 0
+                document.getElementById("nextService").value
             ),
 
         insurance:
-            insuranceInput?.value || "",
+            document.getElementById("insurance").value,
 
         puc:
-            pucInput?.value || ""
+            document.getElementById("puc").value
 
     };
 
@@ -524,47 +140,111 @@ function saveVehicle() {
 
     updateDashboard();
 
-    displayStatus();
-
-    updateOldDashboard();
-
-
-    alert(
-        "Vehicle details saved successfully."
-    );
+    alert("Vehicle saved successfully.");
 }
 
 
-/* ================= SERVICE SYSTEM ================= */
+/* ================= DASHBOARD ================= */
 
-function addService() {
+function updateDashboard() {
 
-    const typeInput =
-        document.getElementById("serviceType");
+    const vehicle = getVehicle();
 
-    const dateInput =
-        document.getElementById("serviceDate");
+    const name =
+        document.getElementById(
+            "dashboardVehicleName"
+        );
 
-    const costInput =
-        document.getElementById("serviceCost");
+    const registration =
+        document.getElementById(
+            "dashboardRegistration"
+        );
+
+    const km =
+        document.getElementById(
+            "dashboardCurrentKm"
+        );
+
+    const service =
+        document.getElementById(
+            "dashboardServiceStatus"
+        );
+
+    const spent =
+        document.getElementById(
+            "dashboardTotalSpent"
+        );
 
 
-    if (!typeInput ||
-        !dateInput ||
-        !costInput) {
+    if (!vehicle) {
+
+        if (name)
+            name.textContent = "YOUR VEHICLE";
+
+        if (registration)
+            registration.textContent =
+                "Add your vehicle below.";
+
+        if (km)
+            km.textContent = "—";
+
+        if (service)
+            service.textContent = "—";
+
+        if (spent)
+            spent.textContent = "₹0";
 
         return;
     }
 
 
+    if (name)
+        name.textContent = vehicle.name;
+
+
+    if (registration)
+        registration.textContent =
+            vehicle.registration;
+
+
+    if (km)
+        km.textContent =
+            Number(vehicle.currentKm)
+                .toLocaleString("en-IN") +
+            " KM";
+
+
+    if (service)
+        service.textContent =
+            getServiceStatus(vehicle).text;
+
+
+    if (spent)
+        spent.textContent =
+            "₹" +
+            calculateTotalSpent()
+                .toLocaleString("en-IN");
+}
+
+
+/* ================= ADD SERVICE ================= */
+
+function addService() {
+
     const type =
-        typeInput.value;
+        document.getElementById(
+            "serviceType"
+        ).value.trim();
 
     const date =
-        dateInput.value;
+        document.getElementById(
+            "serviceDate"
+        ).value;
 
     const cost =
-        costInput.value;
+        document.getElementById(
+            "serviceCost"
+        ).value;
 
 
     if (!type || !date || !cost) {
@@ -577,7 +257,10 @@ function addService() {
     }
 
 
-    const service = {
+    const history = getHistory();
+
+
+    history.push({
 
         type: type,
 
@@ -585,14 +268,7 @@ function addService() {
 
         cost: Number(cost)
 
-    };
-
-
-    const history =
-        getHistory();
-
-
-    history.push(service);
+    });
 
 
     localStorage.setItem(
@@ -601,18 +277,22 @@ function addService() {
     );
 
 
+    document.getElementById(
+        "serviceType"
+    ).value = "";
+
+    document.getElementById(
+        "serviceDate"
+    ).value = "";
+
+    document.getElementById(
+        "serviceCost"
+    ).value = "";
+
+
     displayHistory();
 
     updateDashboard();
-
-    updateOldDashboard();
-
-
-    typeInput.value = "";
-
-    dateInput.value = "";
-
-    costInput.value = "";
 }
 
 
@@ -624,13 +304,10 @@ function displayHistory() {
         document.getElementById("history");
 
 
-    if (!container) {
-        return;
-    }
+    if (!container) return;
 
 
-    const history =
-        getHistory();
+    const history = getHistory();
 
 
     container.innerHTML = "";
@@ -641,9 +318,7 @@ function displayHistory() {
         container.innerHTML = `
 
             <div class="empty">
-
                 No maintenance records yet.
-
             </div>
 
         `;
@@ -652,8 +327,16 @@ function displayHistory() {
     }
 
 
-    history.forEach(
-        (service, index) => {
+    history
+        .slice()
+        .reverse()
+        .forEach((service, reverseIndex) => {
+
+            const actualIndex =
+                history.length -
+                1 -
+                reverseIndex;
+
 
             container.innerHTML += `
 
@@ -674,13 +357,13 @@ function displayHistory() {
                     ₹${Number(service.cost)
                         .toLocaleString("en-IN")}
 
-                    <br>
+                    <br><br>
 
                     <button
                         class="delete-btn"
-                        onclick="deleteService(${index})">
+                        onclick="deleteService(${actualIndex})">
 
-                        Delete
+                        DELETE
 
                     </button>
 
@@ -688,8 +371,7 @@ function displayHistory() {
 
             `;
 
-        }
-    );
+        });
 }
 
 
@@ -700,19 +382,14 @@ function deleteService(index) {
     if (!confirm(
         "Delete this maintenance record?"
     )) {
-
         return;
     }
 
 
-    const history =
-        getHistory();
+    const history = getHistory();
 
 
-    history.splice(
-        index,
-        1
-    );
+    history.splice(index, 1);
 
 
     localStorage.setItem(
@@ -724,136 +401,16 @@ function deleteService(index) {
     displayHistory();
 
     updateDashboard();
-
-    updateOldDashboard();
 }
 
 
-/* ================= LOAD SAVED DATA ================= */
-
-function loadSavedData() {
-
-    const vehicle =
-        getVehicle();
-
-
-    /*
-       Only populate old form fields
-       if they actually exist.
-    */
-
-    if (vehicle) {
-
-        const name =
-            document.getElementById("vehicleName");
-
-        const registration =
-            document.getElementById("registration");
-
-        const currentKm =
-            document.getElementById("currentKm");
-
-        const lastService =
-            document.getElementById("lastService");
-
-        const nextService =
-            document.getElementById("nextService");
-
-        const insurance =
-            document.getElementById("insurance");
-
-        const puc =
-            document.getElementById("puc");
-
-
-        /*
-           IMPORTANT:
-           New dashboard uses vehicleName
-           as a text element, not an input.
-        */
-
-        if (name && name.tagName === "INPUT") {
-
-            name.value =
-                vehicle.name;
-
-        }
-
-
-        if (registration &&
-            registration.tagName === "INPUT") {
-
-            registration.value =
-                vehicle.registration;
-
-        }
-
-
-        if (currentKm &&
-            currentKm.tagName === "INPUT") {
-
-            currentKm.value =
-                vehicle.currentKm;
-
-        }
-
-
-        if (lastService &&
-            lastService.tagName === "INPUT") {
-
-            lastService.value =
-                vehicle.lastService;
-
-        }
-
-
-        if (nextService &&
-            nextService.tagName === "INPUT") {
-
-            nextService.value =
-                vehicle.nextService;
-
-        }
-
-
-        if (insurance &&
-            insurance.tagName === "INPUT") {
-
-            insurance.value =
-                vehicle.insurance;
-
-        }
-
-
-        if (puc &&
-            puc.tagName === "INPUT") {
-
-            puc.value =
-                vehicle.puc;
-
-        }
-
-    }
-
-
-    updateDashboard();
-
-    updateOldDashboard();
-
-    displayStatus();
-
-    displayHistory();
-}
-
-
-/* ================= CLEAR DATA ================= */
+/* ================= CLEAR ALL ================= */
 
 function clearAllData() {
 
     if (!confirm(
-        "Are you sure you want to delete ALL Torque Theory data?"
+        "Delete ALL Torque Theory data?"
     )) {
-
         return;
     }
 
@@ -861,7 +418,6 @@ function clearAllData() {
     localStorage.removeItem("vehicle");
 
     localStorage.removeItem("history");
-
 
     location.reload();
 }
@@ -873,7 +429,6 @@ function scrollToSection(id) {
 
     const section =
         document.getElementById(id);
-
 
     if (section) {
 
@@ -892,7 +447,6 @@ function toggleMenu() {
     const nav =
         document.getElementById("mainNav");
 
-
     if (nav) {
 
         nav.classList.toggle("show");
@@ -901,20 +455,55 @@ function toggleMenu() {
 }
 
 
-/* ================= ADD VEHICLE ================= */
+/* ================= LOAD ================= */
 
-function addVehicle() {
+function loadSavedData() {
 
-    /*
-       The proper vehicle-management screen
-       will be added in the Garage module.
+    const vehicle = getVehicle();
 
-       For now, this keeps the dashboard stable.
-    */
 
-    alert(
-        "Vehicle management will be added in MY GARAGE."
-    );
+    if (vehicle) {
+
+        document.getElementById(
+            "vehicleName"
+        ).value = vehicle.name || "";
+
+
+        document.getElementById(
+            "registration"
+        ).value = vehicle.registration || "";
+
+
+        document.getElementById(
+            "vehicleCurrentKm"
+        ).value = vehicle.currentKm || "";
+
+
+        document.getElementById(
+            "lastService"
+        ).value = vehicle.lastService || "";
+
+
+        document.getElementById(
+            "nextService"
+        ).value = vehicle.nextService || "";
+
+
+        document.getElementById(
+            "insurance"
+        ).value = vehicle.insurance || "";
+
+
+        document.getElementById(
+            "puc"
+        ).value = vehicle.puc || "";
+
+    }
+
+
+    updateDashboard();
+
+    displayHistory();
 }
 
 
