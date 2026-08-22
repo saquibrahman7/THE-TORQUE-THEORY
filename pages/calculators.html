@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cost Calculator | The Torque Theory</title>
+
+    <link rel="stylesheet" href="../style.css">
+
+    <style>
+
+        .calculator-hero {
+            padding: 75px 5% 50px;
+
+            background:
+                radial-gradient(
+                    circle at 80% 40%,
+                    rgba(214,169,40,.12),
+                    transparent 35%
+                );
+        }
+
+        .calculator-hero-inner {
+            max-width: 1180px;
+            margin: auto;
+        }
+
+        .calculator-hero h2 {
+            font-size: clamp(42px, 7vw, 76px);
+            line-height: .95;
+            letter-spacing: -3px;
+        }
+
+        .calculator-hero h2 span {
+            color: var(--accent);
+        }
+
+        .calculator-description {
+            max-width: 600px;
+            margin-top: 20px;
+            color: var(--muted);
+        }
+
+        .calculator-content {
+            width: min(1180px, 90%);
+            margin: auto;
+            padding: 50px 0 90px;
+        }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .calculator-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 25px;
+        }
+
+        .calculator-card:hover {
+            border-color: var(--accent);
+        }
+
+        .calculator-card h2 {
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+
+        .calculator-card > p {
+            color: var(--muted);
+            font-size: 12px;
+            margin-bottom: 22px;
+        }
+
+        .calc-form {
+            display: grid;
+            gap: 14px;
+        }
+
+        .calc-group {
+            display: grid;
+            gap: 6px;
+        }
+
+        .calc-group label {
+            color: var(--muted);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .calc-group input {
+            width: 100%;
+            padding: 12px;
+
+            background: #0b0d0d;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+
+            color: white;
+            outline: none;
+        }
+
+        .calc-group input:focus {
+            border-color: var(--accent);
+        }
+
+        .calc-button {
+            margin-top: 5px;
+            padding: 12px;
+
+            border: 0;
+            border-radius: 7px;
+
+            background: var(--accent);
+            color: #080909;
+
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+
+            cursor: pointer;
+        }
+
+        .calc-result {
+            margin-top: 20px;
+            padding: 17px;
+
+            background: #0b0d0d;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+        }
+
+        .result-label {
+            color: var(--muted);
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .result-value {
+            display: block;
+            margin-top: 5px;
+
+            color: var(--accent);
+            font-size: 25px;
+            font-weight: 900;
+        }
+
+        .breakdown {
+            margin-top: 12px;
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.8;
+        }
+
+        .ownership-card {
+            grid-column: 1 / -1;
+        }
+
+        .ownership-result {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .ownership-stat {
+            padding: 18px;
+
+            background: #0b0d0d;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+        }
+
+        .ownership-stat span {
+            color: var(--muted);
+            font-size: 9px;
+            letter-spacing: 1px;
+        }
+
+        .ownership-stat strong {
+            display: block;
+            margin-top: 6px;
+            font-size: 20px;
+        }
+
+        @media (max-width: 800px) {
+
+            .calculator-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ownership-card {
+                grid-column: auto;
+            }
+
+            .ownership-result {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= HEADER ================= -->
+
+<header class="topbar">
+
+    <div class="brand">
+
+        <img
+            src="../torque-theory-logo.png"
+            alt="Torque Theory">
+
+        <div>
+
+            <h1>THE TORQUE THEORY</h1>
+
+            <span>YOUR DIGITAL GARAGE</span>
+
+        </div>
+
+    </div>
+
+
+    <button
+        class="menu-btn"
+        onclick="toggleMenu()">
+
+        ☰
+
+    </button>
+
+
+    <nav id="mainNav">
+
+        <a href="../index.html">
+            Dashboard
+        </a>
+
+        <a href="../index.html#garage">
+            My Garage
+        </a>
+
+        <a href="../index.html#maintenance">
+            Maintenance
+        </a>
+
+        <a href="../index.html#tools">
+            Tools
+        </a>
+
+    </nav>
+
+</header>
+
+
+<!-- ================= HERO ================= -->
+
+<section class="calculator-hero">
+
+    <div class="calculator-hero-inner">
+
+        <p class="eyebrow">
+            TORQUE THEORY TOOLS
+        </p>
+
+        <h2>
+            COST<br>
+            <span>CALCULATOR.</span>
+        </h2>
+
+        <p class="calculator-description">
+            Calculate fuel costs, road-trip expenses,
+            service bills and the real cost of owning
+            your car.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ================= CALCULATORS ================= -->
+
+<main class="calculator-content">
+
+    <div class="calculator-grid">
+
+
+        <!-- ================= FUEL ================= -->
+
+        <div class="calculator-card">
+
+            <h2>⛽ Fuel Cost</h2>
+
+            <p>
+                Find out how much a drive will cost.
+            </p>
+
+            <div class="calc-form">
+
+                <div class="calc-group">
+
+                    <label>
+                        DISTANCE (KM)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="fuelDistance"
+                        placeholder="500">
+
+                </div>
+
+
+                <div class="calc-group">
+
+                    <label>
+                        MILEAGE (KM/L)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="fuelMileage"
+                        placeholder="18">
+
+                </div>
+
+
+                <div class="calc-group">
+
+                    <label>
+                        FUEL PRICE (₹/L)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="fuelPrice"
+                        placeholder="96">
+
+                </div>
+
+
+                <button
+                    class="calc-button"
+                    onclick="calculateFuel()">
+
+                    CALCULATE
+
+                </button>
+
+            </div>
+
+
+            <div class="calc-result">
+
+                <span class="result-label">
+                    FUEL COST
+                </span>
+
+                <strong
+                    class="result-value"
+                    id="fuelResult">
+
+                    ₹0
+
+                </strong>
+
+                <div
+                    class="breakdown"
+                    id="fuelBreakdown">
+
+                    Enter your values above.
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= TRIP ================= -->
+
+        <div class="calculator-card">
+
+            <h2>🛣️ Trip Cost</h2>
+
+            <p>
+                Calculate your complete road-trip cost.
+            </p>
+
+            <div class="calc-form">
+
+                <div class="calc-group">
+
+                    <label>
+                        DISTANCE (KM)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="tripDistance"
+                        placeholder="500">
+
+                </div>
+
+
+                <div class="calc-group">
+
+                    <label>
+                        MILEAGE (KM/L)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="tripMileage"
+                        placeholder="18">
+
+                </div>
+
+
+                <div class="calc-group">
+
+                    <label>
+                        FUEL PRICE (₹/L)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="tripFuelPrice"
+                        placeholder="96">
+
+                </div>
+
+
+                <div class="calc-group">
+
+                    <label>
+                        TOLL (₹)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="tripToll"
+                        placeholder="500">
+
+                </div>
+
+
+                <div class="calc-group">
+
+                    <label>
+                        PARKING (₹)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="tripParking"
+                        placeholder="200">
+
+                </div>
+
+
+                <div class="calc-group">
+
+                    <label>
+                        OTHER EXPENSES (₹)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="tripOther"
+                        placeholder="500">
+
+                </div>
+
+
+                <button
+                    class="calc-button"
+                    onclick="calculateTrip()">
+
+                    CALCULATE
+
+                </button>
+
+            </div>
+
+
+            <div class="calc-result">
+
+                <span class="result-label">
+                    TOTAL TRIP COST
+                </span>
+
+                <strong
+                    class="result-value"
+                    id="tripResult">
+
+                    ₹0
+
+                </strong>
+
+                <div
+                    class="breakdown"
+                    id="tripBreakdown">
+
+                    Enter your values above.
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= SERVICE ================= -->
+
+        <div class="calculator-card">
+
+            <h2>🔧 Service Cost</h2>
+
+            <p>
+                Build an estimated service bill.
+            </p>
+
+            <div class="calc-form">
+
+                <div class="calc-group">
+
+                    <label>
+                        ENGINE OIL
+                    </label>
+
+                    <input
+                        type="number"
+                        id="oilCost"
+                        placeholder="2500">
+
+                </div>
+
+
+                <div class="calc-group">
+
+                    <label>
+                        OIL FILTER
+                    </label>
+
+                    <input
+                        type="number"
+                        id="oilFilter"
+                        placeholder="500">
+
+                </div>
+
+
+                <div class="calc-group">
+
+                    <label>
+                        AIR FILTER
+                    </label>
+
+                    <input
+                        type="number"
+                        id="airFilter"
+                        placeholder="600">
+
+                </div>
+
+
+                <div class="calc-group">
+
+                    <label>
+                        LABOUR
+                    </label>
+
+                    <input
+                        type="number"
+                        id="labourCost"
+                        placeholder="800">
+
+                </div>
+
+
+                <div class="calc-group">
+
+                    <label>
+                        OTHER
+                    </label>
+
+                    <input
+                        type="number"
+                        id="otherService"
+                        placeholder="0">
+
+                </div>
+
+
+                <button
+                    class="calc-button"
+                    onclick="calculateService()">
+
+                    CALCULATE
+
+                </button>
+
+            </div>
+
+
+            <div class="calc-result">
+
+                <span class="result-label">
+                    ESTIMATED SERVICE COST
+                </span>
+
+                <strong
+                    class="result-value"
+                    id="serviceResult">
+
+                    ₹0
+
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= OWNERSHIP ================= -->
+
+        <div class="calculator-card ownership-card">
+
+            <h2>🚗 True Ownership Cost</h2>
+
+            <p>
+                See what your car really costs you.
+            </p>
+
+            <div class="calc-form">
+
+                <div class="calc-group">
+
+                    <label>
+                        PURCHASE PRICE (₹)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="purchasePrice"
+                        placeholder="800000">
+
+                </div>
+
+
+                <div class="calc-group">
+
+                    <label>
+                        FUEL SPENT (₹)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="ownershipFuel"
+                        placeholder="100000">
+
+                </div>
+
+
+                <div class="calc-group">
+
+                    <label>
+                        INSURANCE (₹)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="ownershipInsurance"
+                        placeholder="50000">
+
+                </div>
+
+
+                <div class="calc-group">
+
+                    <label>
+                        SERVICE & REPAIRS (₹)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="ownershipService"
+                        placeholder="75000">
+
+                </div>
+
+
+                <div class="calc-group">
+
+                    <label>
+                        MODIFICATIONS (₹)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="ownershipMods"
+                        placeholder="25000">
+
+                </div>
+
+
+                <div class="calc-group">
+
+                    <label>
+                        CURRENT RESALE VALUE (₹)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="resaleValue"
+                        placeholder="550000">
+
+                </div>
+
+
+                <button
+                    class="calc-button"
+                    onclick="calculateOwnership()">
+
+                    CALCULATE TRUE COST
+
+                </button>
+
+            </div>
+
+
+            <div
+                class="ownership-result"
+                id="ownershipResult">
+
+                <div class="ownership-stat">
+
+                    <span>
+                        TOTAL MONEY PUT IN
+                    </span>
+
+                    <strong>
+                        ₹0
+                    </strong>
+
+                </div>
+
+
+                <div class="ownership-stat">
+
+                    <span>
+                        RESALE VALUE
+                    </span>
+
+                    <strong>
+                        ₹0
+                    </strong>
+
+                </div>
+
+
+                <div class="ownership-stat">
+
+                    <span>
+                        TRUE COST
+                    </span>
+
+                    <strong>
+                        ₹0
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <img
+        src="../torque-theory-logo.png"
+        alt="Torque Theory">
+
+    <h3>
+        THE TORQUE THEORY
+    </h3>
+
+    <p>
+        BUILT BY AUTOHEADS.
+    </p>
+
+    <div class="footer-line"></div>
+
+    <small>
+        © 2026 The Torque Theory
+    </small>
+
+</footer>
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+function toggleMenu() {
+
+    document
+        .getElementById("mainNav")
+        .classList.toggle("show");
+
+}
+
+
+/* ================= FUEL ================= */
+
+function calculateFuel() {
+
+    const distance =
+        Number(document.getElementById("fuelDistance").value);
+
+    const mileage =
+        Number(document.getElementById("fuelMileage").value);
+
+    const price =
+        Number(document.getElementById("fuelPrice").value);
+
+
+    if (!distance || !mileage || !price) {
+
+        alert("Enter all fuel details.");
+
+        return;
+    }
+
+
+    const litres =
+        distance / mileage;
+
+    const cost =
+        litres * price;
+
+
+    document.getElementById(
+        "fuelResult"
+    ).textContent =
+        "₹" + cost.toLocaleString("en-IN", {
+            maximumFractionDigits: 0
+        });
+
+
+    document.getElementById(
+        "fuelBreakdown"
+    ).textContent =
+
+        "Fuel required: " +
+        litres.toFixed(1) +
+        " L";
+
+
+}
+
+
+/* ================= TRIP ================= */
+
+function calculateTrip() {
+
+    const distance =
+        Number(document.getElementById("tripDistance").value);
+
+    const mileage =
+        Number(document.getElementById("tripMileage").value);
+
+    const fuelPrice =
+        Number(document.getElementById("tripFuelPrice").value);
+
+    const toll =
+        Number(document.getElementById("tripToll").value) || 0;
+
+    const parking =
+        Number(document.getElementById("tripParking").value) || 0;
+
+    const other =
+        Number(document.getElementById("tripOther").value) || 0;
+
+
+    if (!distance || !mileage || !fuelPrice) {
+
+        alert("Enter distance, mileage and fuel price.");
+
+        return;
+    }
+
+
+    const fuel =
+        (distance / mileage) * fuelPrice;
+
+
+    const total =
+        fuel +
+        toll +
+        parking +
+        other;
+
+
+    document.getElementById(
+        "tripResult"
+    ).textContent =
+        "₹" +
+        total.toLocaleString("en-IN", {
+            maximumFractionDigits: 0
+        });
+
+
+    document.getElementById(
+        "tripBreakdown"
+    ).textContent =
+
+        "Fuel: ₹" +
+        fuel.toLocaleString("en-IN", {
+            maximumFractionDigits: 0
+        }) +
+
+        " | Toll: ₹" +
+        toll.toLocaleString("en-IN") +
+
+        " | Parking: ₹" +
+        parking.toLocaleString("en-IN") +
+
+        " | Other: ₹" +
+        other.toLocaleString("en-IN");
+
+}
+
+
+/* ================= SERVICE ================= */
+
+function calculateService() {
+
+    const oil =
+        Number(document.getElementById("oilCost").value) || 0;
+
+    const oilFilter =
+        Number(document.getElementById("oilFilter").value) || 0;
+
+    const airFilter =
+        Number(document.getElementById("airFilter").value) || 0;
+
+    const labour =
+        Number(document.getElementById("labourCost").value) || 0;
+
+    const other =
+        Number(document.getElementById("otherService").value) || 0;
+
+
+    const total =
+        oil +
+        oilFilter +
+        airFilter +
+        labour +
+        other;
+
+
+    document.getElementById(
+        "serviceResult"
+    ).textContent =
+        "₹" +
+        total.toLocaleString("en-IN");
+
+}
+
+
+/* ================= OWNERSHIP ================= */
+
+function calculateOwnership() {
+
+    const purchase =
+        Number(document.getElementById("purchasePrice").value) || 0;
+
+    const fuel =
+        Number(document.getElementById("ownershipFuel").value) || 0;
+
+    const insurance =
+        Number(document.getElementById("ownershipInsurance").value) || 0;
+
+    const service =
+        Number(document.getElementById("ownershipService").value) || 0;
+
+    const mods =
+        Number(document.getElementById("ownershipMods").value) || 0;
+
+    const resale =
+        Number(document.getElementById("resaleValue").value) || 0;
+
+
+    const invested =
+        purchase +
+        fuel +
+        insurance +
+        service +
+        mods;
+
+
+    const trueCost =
+        invested - resale;
+
+
+    document.getElementById(
+        "ownershipResult"
+    ).innerHTML = `
+
+        <div class="ownership-stat">
+
+            <span>
+                TOTAL MONEY PUT IN
+            </span>
+
+            <strong>
+                ₹${invested.toLocaleString("en-IN")}
+            </strong>
+
+        </div>
+
+
+        <div class="ownership-stat">
+
+            <span>
+                RESALE VALUE
+            </span>
+
+            <strong>
+                ₹${resale.toLocaleString("en-IN")}
+            </strong>
+
+        </div>
+
+
+        <div class="ownership-stat">
+
+            <span>
+                TRUE COST
+            </span>
+
+            <strong>
+                ₹${trueCost.toLocaleString("en-IN")}
+            </strong>
+
+        </div>
+
+    `;
+
+}
+
+</script>
+
+
+</body>
+</html>
