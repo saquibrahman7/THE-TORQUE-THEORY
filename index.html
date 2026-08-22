@@ -1,465 +1,355 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
+    <title>THE TORQUE THEORY | Digital Garage</title>
 
-    <title>
-        THE TORQUE THEORY | Digital Pitstop For Your Car
-    </title>
-
-    <link rel="stylesheet" href="./style.css">
-
+    <link rel="stylesheet" href="style.css">
 </head>
-
 
 <body>
 
+    <!-- ================= HEADER ================= -->
 
-<header class="topbar">
+    <header class="topbar">
 
-    <div class="brand">
+        <div class="brand">
+            <img src="torque-theory-logo.png" alt="Torque Theory">
+            <div>
+                <h1>THE TORQUE THEORY</h1>
+                <span>YOUR DIGITAL GARAGE</span>
+            </div>
+        </div>
 
-        <img
-            src="torque-theory-logo.png"
-            alt="The Torque Theory Logo"
-            class="logo"
-        >
+        <button class="menu-btn" onclick="toggleMenu()">☰</button>
 
-        <div class="brand-text">
+        <nav id="mainNav">
+            <a href="index.html" class="active">Dashboard</a>
+            <a href="#garage">My Garage</a>
+            <a href="#tools">Tools</a>
+            <a href="#explore">Explore</a>
+        </nav>
 
-            <h1>
-                THE TORQUE THEORY
-            </h1>
+    </header>
+
+
+    <!-- ================= HERO ================= -->
+
+    <main>
+
+        <section class="hero">
+
+            <div class="hero-content">
+
+                <p class="eyebrow">THE DIGITAL GARAGE FOR CAR OWNERS</p>
+
+                <h2>
+                    KNOW YOUR CAR.<br>
+                    <span>OWN THE DRIVE.</span>
+                </h2>
+
+                <p class="hero-text">
+                    Track maintenance, calculate costs, compare cars,
+                    understand performance and manage your vehicle —
+                    all in one place.
+                </p>
+
+                <div class="hero-buttons">
+                    <button onclick="scrollToSection('garage')">
+                        MY GARAGE
+                    </button>
+
+                    <button class="secondary-btn"
+                            onclick="scrollToSection('tools')">
+                        EXPLORE TOOLS
+                    </button>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= GARAGE ================= -->
+
+        <section id="garage" class="section">
+
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">YOUR VEHICLE</p>
+                    <h2>MY GARAGE</h2>
+                </div>
+
+                <button class="small-btn" onclick="addVehicle()">
+                    + ADD VEHICLE
+                </button>
+            </div>
+
+
+            <div class="vehicle-card">
+
+                <div class="vehicle-info">
+
+                    <div class="vehicle-icon">
+                        🚗
+                    </div>
+
+                    <div>
+                        <p class="label">CURRENT VEHICLE</p>
+
+                        <h3 id="vehicleName">
+                            YOUR VEHICLE
+                        </h3>
+
+                        <p id="vehicleDetails">
+                            Add your vehicle to get started.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="vehicle-stats">
+
+                    <div class="stat">
+                        <span>CURRENT KM</span>
+                        <strong id="currentKm">—</strong>
+                    </div>
+
+                    <div class="stat">
+                        <span>SERVICE</span>
+                        <strong id="serviceStatus">—</strong>
+                    </div>
+
+                    <div class="stat">
+                        <span>TOTAL SPENT</span>
+                        <strong id="totalSpent">—</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= QUICK ACTIONS ================= -->
+
+        <section id="tools" class="section">
+
+            <div class="section-heading">
+
+                <div>
+                    <p class="eyebrow">FAST ACCESS</p>
+                    <h2>QUICK TOOLS</h2>
+                </div>
+
+            </div>
+
+
+            <div class="tools-grid">
+
+                <a href="pages/maintenance.html" class="tool-card">
+
+                    <div class="tool-icon">🔧</div>
+
+                    <div>
+                        <h3>Maintenance</h3>
+                        <p>Track services & repairs.</p>
+                    </div>
+
+                    <span class="arrow">→</span>
+
+                </a>
+
+
+                <a href="pages/performance.html" class="tool-card">
+
+                    <div class="tool-icon">🏎️</div>
+
+                    <div>
+                        <h3>Performance Lab</h3>
+                        <p>Explore your car's numbers.</p>
+                    </div>
+
+                    <span class="arrow">→</span>
+
+                </a>
+
+
+                <a href="pages/tyres.html" class="tool-card">
+
+                    <div class="tool-icon">🛞</div>
+
+                    <div>
+                        <h3>Tyre Lab</h3>
+                        <p>Compare tyre sizes.</p>
+                    </div>
+
+                    <span class="arrow">→</span>
+
+                </a>
+
+
+                <a href="pages/calculators.html" class="tool-card">
+
+                    <div class="tool-icon">💰</div>
+
+                    <div>
+                        <h3>Cost Calculator</h3>
+                        <p>Fuel, trips & modifications.</p>
+                    </div>
+
+                    <span class="arrow">→</span>
+
+                </a>
+
+
+                <a href="pages/compare.html" class="tool-card">
+
+                    <div class="tool-icon">⚔️</div>
+
+                    <div>
+                        <h3>Compare Cars</h3>
+                        <p>Put two cars head-to-head.</p>
+                    </div>
+
+                    <span class="arrow">→</span>
+
+                </a>
+
+
+                <a href="pages/used-car.html" class="tool-card">
+
+                    <div class="tool-icon">🔍</div>
+
+                    <div>
+                        <h3>Used-Car Inspector</h3>
+                        <p>Check before you buy.</p>
+                    </div>
+
+                    <span class="arrow">→</span>
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= EXPLORE ================= -->
+
+        <section id="explore" class="section">
+
+            <div class="section-heading">
+
+                <div>
+                    <p class="eyebrow">DISCOVER</p>
+                    <h2>TORQUE THEORY</h2>
+                </div>
+
+            </div>
+
+
+            <div class="explore-grid">
+
+                <a href="pages/products.html" class="explore-card">
+
+                    <span>🛒</span>
+
+                    <div>
+                        <h3>Torque Garage</h3>
+                        <p>Car products, accessories & gear.</p>
+                    </div>
+
+                </a>
+
+
+                <a href="pages/diy.html" class="explore-card">
+
+                    <span>🧰</span>
+
+                    <div>
+                        <h3>DIY Garage</h3>
+                        <p>Learn basic car maintenance.</p>
+                    </div>
+
+                </a>
+
+
+                <a href="pages/database.html" class="explore-card">
+
+                    <span>📚</span>
+
+                    <div>
+                        <h3>Car Database</h3>
+                        <p>Explore cars, engines & specifications.</p>
+                    </div>
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= FOOTER ================= -->
+
+        <footer>
+
+            <img src="torque-theory-logo.png" alt="Torque Theory">
+
+            <h3>THE TORQUE THEORY</h3>
 
             <p>
-                Digital Pitstop For Your Car
+                BUILT BY AUTOHEADS.
             </p>
 
-            <span class="tagline">
-                Track. Maintain. Drive.
-            </span>
+            <div class="footer-line"></div>
 
-        </div>
+            <small>
+                © 2026 The Torque Theory
+            </small>
 
-    </div>
+        </footer>
 
-</header>
+    </main>
 
 
+    <!-- ================= JAVASCRIPT ================= -->
 
-<main class="container">
+    <script src="script.js"></script>
 
+    <script>
 
-    <!-- DASHBOARD -->
+        function scrollToSection(id) {
+            document.getElementById(id)?.scrollIntoView({
+                behavior: "smooth"
+            });
+        }
 
-    <section class="dashboard">
 
+        function toggleMenu() {
 
-        <div class="stat-card">
+            const nav = document.getElementById("mainNav");
 
-            <span>Vehicle</span>
+            nav.classList.toggle("show");
 
-            <h2 id="dashboardVehicle">
-                —
-            </h2>
+        }
 
-        </div>
 
+        function addVehicle() {
 
+            alert(
+                "Vehicle management is coming next.\n\n" +
+                "We'll connect your garage system here."
+            );
 
-        <div class="stat-card">
+        }
 
-            <span>Current KM</span>
-
-            <h2 id="dashboardKm">
-                —
-            </h2>
-
-        </div>
-
-
-
-        <div class="stat-card">
-
-            <span>Service Status</span>
-
-            <h2 id="dashboardService">
-                —
-            </h2>
-
-        </div>
-
-
-
-        <div class="stat-card">
-
-            <span>Total Spent</span>
-
-            <h2 id="dashboardSpent">
-                ₹0
-            </h2>
-
-        </div>
-
-
-    </section>
-
-
-
-    <!-- VEHICLE INFORMATION -->
-
-    <section class="card">
-
-        <div class="section-title">
-
-            <div>
-
-                <h2>
-                    Vehicle Information
-                </h2>
-
-                <p>
-                    Enter your vehicle details
-                </p>
-
-            </div>
-
-        </div>
-
-
-
-        <div class="form-grid">
-
-
-            <div>
-
-                <label>
-                    Vehicle Name
-                </label>
-
-                <input
-                    id="vehicleName"
-                    placeholder="Example: Maruti Swift">
-
-            </div>
-
-
-
-            <div>
-
-                <label>
-                    Registration Number
-                </label>
-
-                <input
-                    id="registration"
-                    placeholder="Example: TS09AB1234">
-
-            </div>
-
-
-
-            <div>
-
-                <label>
-                    Current KM
-                </label>
-
-                <input
-                    id="currentKm"
-                    type="number"
-                    placeholder="52000">
-
-            </div>
-
-
-
-            <div>
-
-                <label>
-                    Last Service KM
-                </label>
-
-                <input
-                    id="lastService"
-                    type="number"
-                    placeholder="48000">
-
-            </div>
-
-
-
-            <div>
-
-                <label>
-                    Next Service KM
-                </label>
-
-                <input
-                    id="nextService"
-                    type="number"
-                    placeholder="53000">
-
-            </div>
-
-
-
-            <div>
-
-                <label>
-                    Insurance Expiry
-                </label>
-
-                <input
-                    id="insurance"
-                    type="date">
-
-            </div>
-
-
-
-            <div>
-
-                <label>
-                    PUC Expiry
-                </label>
-
-                <input
-                    id="puc"
-                    type="date">
-
-            </div>
-
-
-        </div>
-
-
-
-        <button
-            class="primary-btn"
-            onclick="saveVehicle()">
-
-            Save Vehicle Details
-
-        </button>
-
-
-    </section>
-
-
-
-
-    <!-- VEHICLE STATUS -->
-
-    <section class="card">
-
-        <div class="section-title">
-
-            <div>
-
-                <h2>
-                    Vehicle Status
-                </h2>
-
-                <p>
-                    Real-time maintenance information
-                </p>
-
-            </div>
-
-        </div>
-
-
-
-        <div id="status">
-
-            <div class="empty">
-
-                No vehicle information saved yet.
-
-            </div>
-
-        </div>
-
-
-    </section>
-
-
-
-
-    <!-- MAINTENANCE -->
-
-    <section class="card">
-
-        <div class="section-title">
-
-            <div>
-
-                <h2>
-                    Maintenance History
-                </h2>
-
-                <p>
-                    Record completed maintenance work
-                </p>
-
-            </div>
-
-        </div>
-
-
-
-        <div class="form-grid">
-
-
-            <div>
-
-                <label>
-                    Service Type
-                </label>
-
-                <input
-                    id="serviceType"
-                    placeholder="Engine Oil Change">
-
-            </div>
-
-
-
-            <div>
-
-                <label>
-                    Service Date
-                </label>
-
-                <input
-                    id="serviceDate"
-                    type="date">
-
-            </div>
-
-
-
-            <div>
-
-                <label>
-                    Service Cost
-                </label>
-
-                <input
-                    id="serviceCost"
-                    type="number"
-                    placeholder="1800">
-
-            </div>
-
-
-        </div>
-
-
-
-        <button
-            class="primary-btn"
-            onclick="addService()">
-
-            Add Maintenance Record
-
-        </button>
-
-
-
-        <div id="history"></div>
-
-
-    </section>
-
-
-
-
-    <!-- SYSTEM CONTROLS -->
-
-    <section class="card">
-
-        <h2>
-            System Controls
-        </h2>
-
-        <p>
-            Manage locally stored application data.
-        </p>
-
-
-        <button
-            class="danger-btn"
-            onclick="clearAllData()">
-
-            Clear All Data
-
-        </button>
-
-    </section>
-
-
-
-
-    <!-- ABOUT PROJECT -->
-
-    <section class="card project-info">
-
-        <h2>
-            About THE TORQUE THEORY
-        </h2>
-
-
-        <p>
-
-            THE TORQUE THEORY is a web-based digital pitstop
-            designed to help vehicle owners monitor servicing,
-            maintenance records, insurance expiry and PUC expiry
-            from a single dashboard.
-
-        </p>
-
-
-
-        <div class="tech-stack">
-
-            <span>HTML</span>
-
-            <span>CSS</span>
-
-            <span>JavaScript</span>
-
-            <span>LocalStorage</span>
-
-        </div>
-
-
-    </section>
-
-
-</main>
-
-
-
-<footer>
-
-    <p>
-        THE TORQUE THEORY — Digital Pitstop For Your Car
-    </p>
-
-</footer>
-
-
-
-<script src="script.js"></script>
-
+    </script>
 
 </body>
-
 </html>
