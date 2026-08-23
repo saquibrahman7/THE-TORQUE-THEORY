@@ -1,0 +1,1657 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Used Car Inspector | The Torque Theory</title>
+
+    <link rel="stylesheet" href="../style.css">
+
+    <style>
+
+        .inspector-hero {
+            padding: 75px 5% 50px;
+
+            background:
+                radial-gradient(
+                    circle at 80% 40%,
+                    rgba(214,169,40,.12),
+                    transparent 35%
+                );
+        }
+
+        .inspector-hero-inner,
+        .inspector-content {
+            max-width: 1180px;
+            margin: auto;
+        }
+
+        .inspector-hero h2 {
+            font-size: clamp(42px, 7vw, 76px);
+            line-height: .95;
+            letter-spacing: -3px;
+        }
+
+        .inspector-hero h2 span {
+            color: var(--accent);
+        }
+
+        .hero-description {
+            max-width: 600px;
+            margin-top: 20px;
+            color: var(--muted);
+        }
+
+        .inspector-content {
+            width: min(1180px, 90%);
+            padding: 50px 0 90px;
+        }
+
+        .inspection-section {
+            margin-bottom: 25px;
+            padding: 25px;
+
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+        }
+
+        .inspection-section h2 {
+            font-size: 21px;
+            margin-bottom: 5px;
+        }
+
+        .section-description {
+            color: var(--muted);
+            font-size: 11px;
+            margin-bottom: 22px;
+        }
+
+        .vehicle-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+
+        .field {
+            display: grid;
+            gap: 6px;
+        }
+
+        .field label {
+            color: var(--muted);
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .field input,
+        .field select {
+            width: 100%;
+            padding: 12px;
+
+            background: #0b0d0d;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+
+            color: white;
+            outline: none;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            border-color: var(--accent);
+        }
+
+        .check-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .check-item {
+            padding: 16px;
+
+            background: #0b0d0d;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+        }
+
+        .check-question {
+            display: block;
+            margin-bottom: 12px;
+
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .options {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .options label {
+            cursor: pointer;
+        }
+
+        .options input {
+            display: none;
+        }
+
+        .options span {
+            display: block;
+
+            padding: 8px 11px;
+
+            border: 1px solid var(--border);
+            border-radius: 6px;
+
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        .options input:checked + span {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #080909;
+            font-weight: 800;
+        }
+
+        .inspect-button {
+            width: 100%;
+            padding: 16px;
+
+            border: 0;
+            border-radius: 8px;
+
+            background: var(--accent);
+            color: #080909;
+
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 1px;
+
+            cursor: pointer;
+        }
+
+        .result {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .score-card {
+            text-align: center;
+
+            padding: 35px;
+
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+        }
+
+        .score-number {
+            font-size: 70px;
+            font-weight: 900;
+            color: var(--accent);
+        }
+
+        .score-label {
+            color: var(--muted);
+            font-size: 10px;
+            letter-spacing: 2px;
+        }
+
+        .verdict {
+            margin-top: 15px;
+
+            font-size: 24px;
+            font-weight: 900;
+        }
+
+        .red-flags {
+            margin-top: 20px;
+
+            padding: 20px;
+
+            background: #0b0d0d;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+
+            text-align: left;
+        }
+
+        .red-flags h3 {
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .red-flag {
+            padding: 10px 0;
+
+            border-bottom: 1px solid var(--border);
+
+            color: #ff7777;
+            font-size: 12px;
+        }
+
+        .red-flag:last-child {
+            border-bottom: 0;
+        }
+
+        .clean-result {
+            color: #8ee28e;
+            font-size: 12px;
+        }
+
+        .reset-button {
+            margin-top: 12px;
+
+            width: 100%;
+            padding: 12px;
+
+            background: transparent;
+
+            border: 1px solid var(--border);
+            border-radius: 7px;
+
+            color: var(--muted);
+
+            cursor: pointer;
+        }
+
+        @media (max-width: 800px) {
+
+            .vehicle-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .check-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= HEADER ================= -->
+
+<header class="topbar">
+
+    <div class="brand">
+
+        <img
+            src="../torque-theory-logo.png"
+            alt="Torque Theory">
+
+        <div>
+
+            <h1>THE TORQUE THEORY</h1>
+
+            <span>YOUR DIGITAL GARAGE</span>
+
+        </div>
+
+    </div>
+
+
+    <button
+        class="menu-btn"
+        onclick="toggleMenu()">
+
+        ☰
+
+    </button>
+
+
+    <nav id="mainNav">
+
+        <a href="../index.html">
+            Dashboard
+        </a>
+
+        <a href="../index.html#garage">
+            My Garage
+        </a>
+
+        <a href="../index.html#maintenance">
+            Maintenance
+        </a>
+
+        <a href="../index.html#tools">
+            Tools
+        </a>
+
+    </nav>
+
+</header>
+
+
+<!-- ================= HERO ================= -->
+
+<section class="inspector-hero">
+
+    <div class="inspector-hero-inner">
+
+        <p class="eyebrow">
+            TORQUE THEORY TOOLS
+        </p>
+
+        <h2>
+            USED CAR<br>
+            <span>INSPECTOR.</span>
+        </h2>
+
+        <p class="hero-description">
+            Check the important stuff before buying
+            a used car. Get a score, identify red flags,
+            and make a smarter buying decision.
+        </p>
+
+    </div>
+
+</section>
+
+
+<main class="inspector-content">
+
+
+<!-- ================= VEHICLE ================= -->
+
+<section class="inspection-section">
+
+    <h2>01 — VEHICLE DETAILS</h2>
+
+    <p class="section-description">
+        Enter the basic details of the car you're inspecting.
+    </p>
+
+
+    <div class="vehicle-grid">
+
+        <div class="field">
+
+            <label>
+                MAKE / MODEL
+            </label>
+
+            <input
+                type="text"
+                id="carModel"
+                placeholder="Example: Honda City">
+
+        </div>
+
+
+        <div class="field">
+
+            <label>
+                YEAR
+            </label>
+
+            <input
+                type="number"
+                id="carYear"
+                placeholder="2021">
+
+        </div>
+
+
+        <div class="field">
+
+            <label>
+                ASKING PRICE (₹)
+            </label>
+
+            <input
+                type="number"
+                id="askingPrice"
+                placeholder="850000">
+
+        </div>
+
+
+        <div class="field">
+
+            <label>
+                KM DRIVEN
+            </label>
+
+            <input
+                type="number"
+                id="kmDriven"
+                placeholder="45000">
+
+        </div>
+
+
+        <div class="field">
+
+            <label>
+                FUEL TYPE
+            </label>
+
+            <select id="fuelType">
+
+                <option value="">
+                    Select
+                </option>
+
+                <option>
+                    Petrol
+                </option>
+
+                <option>
+                    Diesel
+                </option>
+
+                <option>
+                    CNG
+                </option>
+
+                <option>
+                    Electric
+                </option>
+
+                <option>
+                    Hybrid
+                </option>
+
+            </select>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= DOCUMENTS ================= -->
+
+<section class="inspection-section">
+
+    <h2>02 — DOCUMENTS</h2>
+
+    <p class="section-description">
+        Documents are critical. Never skip this section.
+    </p>
+
+
+    <div class="check-grid">
+
+        <div class="check-item">
+
+            <span class="check-question">
+                RC available and details match?
+            </span>
+
+            <div class="options">
+
+                <label>
+                    <input
+                        type="radio"
+                        name="rc"
+                        value="2">
+
+                    <span>YES</span>
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="rc"
+                        value="0">
+
+                    <span>NO</span>
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <div class="check-item">
+
+            <span class="check-question">
+                Insurance valid?
+            </span>
+
+            <div class="options">
+
+                <label>
+                    <input
+                        type="radio"
+                        name="insurance"
+                        value="2">
+
+                    <span>YES</span>
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="insurance"
+                        value="0">
+
+                    <span>NO</span>
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <div class="check-item">
+
+            <span class="check-question">
+                PUC available?
+            </span>
+
+            <div class="options">
+
+                <label>
+                    <input
+                        type="radio"
+                        name="puc"
+                        value="1">
+
+                    <span>YES</span>
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="puc"
+                        value="0">
+
+                    <span>NO</span>
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <div class="check-item">
+
+            <span class="check-question">
+                Complete service history?
+            </span>
+
+            <div class="options">
+
+                <label>
+                    <input
+                        type="radio"
+                        name="history"
+                        value="2">
+
+                    <span>YES</span>
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="history"
+                        value="1">
+
+                    <span>PARTIAL</span>
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="history"
+                        value="0">
+
+                    <span>NO</span>
+                </label>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= EXTERIOR ================= -->
+
+<section class="inspection-section">
+
+    <h2>03 — EXTERIOR</h2>
+
+    <p class="section-description">
+        Look carefully in daylight. Panel gaps and paint
+        differences can reveal previous repairs.
+    </p>
+
+
+    <div class="check-grid">
+
+        <div class="check-item">
+
+            <span class="check-question">
+                Accident / structural damage?
+            </span>
+
+            <div class="options">
+
+                <label>
+                    <input
+                        type="radio"
+                        name="accident"
+                        value="2">
+
+                    <span>NONE</span>
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="accident"
+                        value="0">
+
+                    <span>FOUND</span>
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <div class="check-item">
+
+            <span class="check-question">
+                Panel gaps consistent?
+            </span>
+
+            <div class="options">
+
+                <label>
+                    <input
+                        type="radio"
+                        name="panel"
+                        value="2">
+
+                    <span>YES</span>
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="panel"
+                        value="0">
+
+                    <span>NO</span>
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <div class="check-item">
+
+            <span class="check-question">
+                Paint colour consistent?
+            </span>
+
+            <div class="options">
+
+                <label>
+                    <input
+                        type="radio"
+                        name="paint"
+                        value="2">
+
+                    <span>YES</span>
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="paint"
+                        value="1">
+
+                    <span>MINOR</span>
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="paint"
+                        value="0">
+
+                    <span>MAJOR</span>
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <div class="check-item">
+
+            <span class="check-question">
+                Rust / corrosion?
+            </span>
+
+            <div class="options">
+
+                <label>
+                    <input
+                        type="radio"
+                        name="rust"
+                        value="2">
+
+                    <span>NONE</span>
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="rust"
+                        value="1">
+
+                    <span>MINOR</span>
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="rust"
+                        value="0">
+
+                    <span>MAJOR</span>
+                </label>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= ENGINE ================= -->
+
+<section class="inspection-section">
+
+    <h2>04 — ENGINE & MECHANICAL</h2>
+
+    <p class="section-description">
+        Ideally inspect the car when the engine is completely cold.
+    </p>
+
+
+    <div class="check-grid">
+
+        <div class="check-item">
+
+            <span class="check-question">
+                Clean cold start?
+            </span>
+
+            <div class="options">
+
+                <label>
+                    <input
+                        type="radio"
+                        name="coldstart"
+                        value="2">
+
+                    <span>YES</span>
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="coldstart"
+                        value="0">
+
+                    <span>NO</span>
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <div class="check-item">
+
+            <span class="check-question">
+                Unusual engine noise?
+            </span>
+
+            <div class="options">
+
+                <label>
+                    <input
+                        type="radio"
+                        name="engineNoise"
+                        value="2">
+
+                    <span>NO</span>
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="engineNoise"
+                        value="0">
+
+                    <span>YES</span>
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <div class="check-item">
+
+            <span class="check-question">
+                Exhaust smoke normal?
+            </span>
+
+            <div class="options">
+
+                <label>
+                    <input
+                        type="radio"
+                        name="smoke"
+                        value="2">
+
+                    <span>YES</span>
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="smoke"
+                        value="0">
+
+                    <span>NO</span>
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <div class="check-item">
+
+            <span class="check-question">
+                Oil / coolant leaks?
+            </span>
+
+            <div class="options">
+
+                <label>
+                    <input
+                        type="radio"
+                        name="leaks"
+                        value="2">
+
+                    <span>NONE</span>
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="leaks"
+                        value="0">
+
+                    <span>FOUND</span>
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <div class="check-item">
+
+            <span class="check-question">
+                Gearbox shifts smoothly?
+            </span>
+
+            <div class="options">
+
+                <label>
+                    <input
+                        type="radio"
+                        name="gearbox"
+                        value="2">
+
+                    <span>YES</span>
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="gearbox"
+                        value="0">
+
+                    <span>NO</span>
+                </label>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= INTERIOR ================= -->
+
+<section class="inspection-section">
+
+    <h2>05 — INTERIOR & ELECTRICAL</h2>
+
+    <p class="section-description">
+        Test every switch, screen and electrical feature.
+    </p>
+
+
+    <div class="check-grid">
+
+        <div class="check-item">
+
+            <span class="check-question">
+                AC works properly?
+            </span>
+
+            <div class="options">
+
+                <label>
+                    <input
+                        type="radio"
+                        name="ac"
+                        value="2">
+
+                    <span>YES</span>
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="ac"
+                        value="0">
+
+                    <span>NO</span>
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <div class="check-item">
+
+            <span class="check-question">
+                Dashboard warning lights normal?
+            </span>
+
+            <div class="options">
+
+                <label>
+                    <input
+                        type="radio"
+                        name="warning"
+                        value="2">
+
+                    <span>YES</span>
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="warning"
+                        value="0">
+
+                    <span>NO</span>
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <div class="check-item">
+
+            <span class="check-question">
+                All electrical features work?
+            </span>
+
+            <div class="options">
+
+                <label>
+                    <input
+                        type="radio"
+                        name="electronics"
+                        value="2">
+
+                    <span>YES</span>
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="electronics"
+                        value="1">
+
+                    <span>MINOR ISSUE</span>
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="electronics"
+                        value="0">
+
+                    <span>MAJOR ISSUE</span>
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <div class="check-item">
+
+            <span class="check-question">
+                Interior condition good?
+            </span>
+
+            <div class="options">
+
+                <label>
+                    <input
+                        type="radio"
+                        name="interior"
+                        value="2">
+
+                    <span>GOOD</span>
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="interior"
+                        value="1">
+
+                    <span>FAIR</span>
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="interior"
+                        value="0">
+
+                    <span>POOR</span>
+                </label>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= TEST DRIVE ================= -->
+
+<section class="inspection-section">
+
+    <h2>06 — TEST DRIVE</h2>
+
+    <p class="section-description">
+        Drive the car yourself. Don't rely only on the seller.
+    </p>
+
+
+    <div class="check-grid">
+
+        <div class="check-item">
+
+            <span class="check-question">
+                Brakes feel strong and straight?
+            </span>
+
+            <div class="options">
+
+                <label>
+                    <input
+                        type="radio"
+                        name="brakes"
+                        value="2">
+
+                    <span>YES</span>
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="brakes"
+                        value="0">
+
+                    <span>NO</span>
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <div class="check-item">
+
+            <span class="check-question">
+                Steering feels normal?
+            </span>
+
+            <div class="options">
+
+                <label>
+                    <input
+                        type="radio"
+                        name="steering"
+                        value="2">
+
+                    <span>YES</span>
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="steering"
+                        value="0">
+
+                    <span>NO</span>
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <div class="check-item">
+
+            <span class="check-question">
+                Suspension has no major noises?
+            </span>
+
+            <div class="options">
+
+                <label>
+                    <input
+                        type="radio"
+                        name="suspension"
+                        value="2">
+
+                    <span>YES</span>
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="suspension"
+                        value="0">
+
+                    <span>NO</span>
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <div class="check-item">
+
+            <span class="check-question">
+                Clutch / transmission feels normal?
+            </span>
+
+            <div class="options">
+
+                <label>
+                    <input
+                        type="radio"
+                        name="clutch"
+                        value="2">
+
+                    <span>YES</span>
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="clutch"
+                        value="0">
+
+                    <span>NO</span>
+                </label>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= REPORT ================= -->
+
+<button
+    class="inspect-button"
+    onclick="generateReport()">
+
+    GENERATE INSPECTION REPORT
+
+</button>
+
+
+<div
+    class="result"
+    id="result">
+
+
+    <div class="score-card">
+
+        <div
+            class="score-number"
+            id="score">
+
+            0
+
+        </div>
+
+        <div class="score-label">
+            INSPECTION SCORE / 100
+        </div>
+
+
+        <div
+            class="verdict"
+            id="verdict">
+
+        </div>
+
+
+        <div
+            class="red-flags"
+            id="redFlags">
+
+        </div>
+
+
+        <button
+            class="reset-button"
+            onclick="resetInspection()">
+
+            START NEW INSPECTION
+
+        </button>
+
+    </div>
+
+</div>
+
+
+</main>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <img
+        src="../torque-theory-logo.png"
+        alt="Torque Theory">
+
+    <h3>
+        THE TORQUE THEORY
+    </h3>
+
+    <p>
+        BUILT BY AUTOHEADS.
+    </p>
+
+    <div class="footer-line"></div>
+
+    <small>
+        © 2026 The Torque Theory
+    </small>
+
+</footer>
+
+
+<script>
+
+function toggleMenu() {
+
+    document
+        .getElementById("mainNav")
+        .classList.toggle("show");
+
+}
+
+
+/* ================= QUESTIONS ================= */
+
+const questions = [
+
+    "rc",
+    "insurance",
+    "puc",
+    "history",
+
+    "accident",
+    "panel",
+    "paint",
+    "rust",
+
+    "coldstart",
+    "engineNoise",
+    "smoke",
+    "leaks",
+    "gearbox",
+
+    "ac",
+    "warning",
+    "electronics",
+    "interior",
+
+    "brakes",
+    "steering",
+    "suspension",
+    "clutch"
+
+];
+
+
+/* ================= RED FLAGS ================= */
+
+const redFlagQuestions = {
+
+    rc:
+        "RC is missing or details don't match.",
+
+    insurance:
+        "Insurance is not valid.",
+
+    history:
+        "Complete service history is unavailable.",
+
+    accident:
+        "Accident / structural damage detected.",
+
+    panel:
+        "Panel gaps are inconsistent.",
+
+    paint:
+        "Major paint inconsistency detected.",
+
+    rust:
+        "Significant rust / corrosion detected.",
+
+    coldstart:
+        "Cold-start problem detected.",
+
+    engineNoise:
+        "Unusual engine noise detected.",
+
+    smoke:
+        "Abnormal exhaust smoke detected.",
+
+    leaks:
+        "Oil or coolant leak detected.",
+
+    gearbox:
+        "Gearbox / transmission issue detected.",
+
+    ac:
+        "AC is not functioning correctly.",
+
+    warning:
+        "Dashboard warning light issue detected.",
+
+    electronics:
+        "Major electrical issue detected.",
+
+    brakes:
+        "Brake problem detected.",
+
+    steering:
+        "Steering problem detected.",
+
+    suspension:
+        "Suspension issue detected.",
+
+    clutch:
+        "Clutch / transmission problem detected."
+
+};
+
+
+/* ================= SCORE ================= */
+
+function generateReport() {
+
+    let score = 0;
+
+    let maximum = 0;
+
+    let redFlags = [];
+
+
+    questions.forEach(name => {
+
+        const selected =
+            document.querySelector(
+                `input[name="${name}"]:checked`
+            );
+
+
+        if (!selected) return;
+
+
+        const value =
+            Number(selected.value);
+
+
+        score += value;
+
+        maximum += 2;
+
+
+        if (
+            redFlagQuestions[name] &&
+            value === 0
+        ) {
+
+            redFlags.push(
+                redFlagQuestions[name]
+            );
+
+        }
+
+    });
+
+
+    if (maximum === 0) {
+
+        alert(
+            "Please complete at least some inspection checks."
+        );
+
+        return;
+
+    }
+
+
+    let percentage =
+        Math.round(
+            (score / maximum) * 100
+        );
+
+
+    /* ================= VERDICT ================= */
+
+    let verdict;
+
+
+    if (redFlags.length >= 3) {
+
+        verdict =
+            "AVOID — TOO MANY RED FLAGS";
+
+    }
+
+    else if (percentage >= 85) {
+
+        verdict =
+            "STRONG BUY";
+
+    }
+
+    else if (percentage >= 70) {
+
+        verdict =
+            "GOOD — INSPECT FURTHER";
+
+    }
+
+    else if (percentage >= 50) {
+
+        verdict =
+            "NEGOTIATE — PROCEED CAREFULLY";
+
+    }
+
+    else {
+
+        verdict =
+            "AVOID — HIGH RISK";
+
+    }
+
+
+    document.getElementById(
+        "score"
+    ).textContent = percentage;
+
+
+    document.getElementById(
+        "verdict"
+    ).textContent = verdict;
+
+
+    const flagContainer =
+        document.getElementById("redFlags");
+
+
+    if (redFlags.length === 0) {
+
+        flagContainer.innerHTML = `
+
+            <h3>
+                INSPECTION FLAGS
+            </h3>
+
+            <div class="clean-result">
+                No major red flags detected
+                from the checks completed.
+            </div>
+
+        `;
+
+    }
+
+    else {
+
+        flagContainer.innerHTML = `
+
+            <h3>
+                RED FLAGS — ${redFlags.length}
+            </h3>
+
+            ${redFlags.map(flag => `
+
+                <div class="red-flag">
+                    ⚠ ${flag}
+                </div>
+
+            `).join("")}
+
+        `;
+
+    }
+
+
+    const result =
+        document.getElementById("result");
+
+
+    result.classList.add("show");
+
+
+    result.scrollIntoView({
+        behavior: "smooth"
+    });
+
+}
+
+
+/* ================= RESET ================= */
+
+function resetInspection() {
+
+    document
+        .querySelectorAll(
+            'input[type="radio"]'
+        )
+        .forEach(input => {
+
+            input.checked = false;
+
+        });
+
+
+    document
+        .getElementById("result")
+        .classList.remove("show");
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+</script>
+
+
+</body>
+</html>
