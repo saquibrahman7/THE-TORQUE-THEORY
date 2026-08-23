@@ -1,0 +1,1716 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Car Comparison | The Torque Theory</title>
+
+    <link rel="stylesheet" href="../style.css">
+
+    <style>
+
+        /* =========================
+           PAGE
+        ========================= */
+
+        .comparison-hero {
+            padding: 75px 5% 55px;
+
+            background:
+                radial-gradient(
+                    circle at 80% 40%,
+                    rgba(214,169,40,.12),
+                    transparent 35%
+                );
+        }
+
+        .comparison-hero-inner {
+            max-width: 1180px;
+            margin: auto;
+        }
+
+        .comparison-hero h2 {
+            font-size: clamp(42px, 7vw, 76px);
+            line-height: .95;
+            letter-spacing: -3px;
+        }
+
+        .comparison-hero h2 span {
+            color: var(--accent);
+        }
+
+        .hero-description {
+            max-width: 650px;
+            margin-top: 20px;
+            color: var(--muted);
+        }
+
+        .comparison-content {
+            width: min(1180px, 90%);
+            margin: auto;
+            padding: 50px 0 90px;
+        }
+
+
+        /* =========================
+           CAR INPUTS
+           ========================= */
+
+        .cars-grid {
+            display: grid;
+            grid-template-columns: 1fr 70px 1fr;
+            gap: 18px;
+            align-items: stretch;
+            margin-bottom: 25px;
+        }
+
+        .car-card {
+            padding: 25px;
+
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+        }
+
+        .car-card.car-a {
+            border-top: 2px solid var(--accent);
+        }
+
+        .car-card.car-b {
+            border-top: 2px solid #777;
+        }
+
+        .car-label {
+            display: inline-block;
+
+            margin-bottom: 10px;
+
+            font-size: 9px;
+            font-weight: 900;
+            letter-spacing: 2px;
+
+            color: var(--muted);
+        }
+
+        .car-card h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .vs-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 18px;
+            font-weight: 900;
+
+            color: var(--accent);
+        }
+
+        .input-grid {
+            display: grid;
+            gap: 13px;
+        }
+
+        .field {
+            display: grid;
+            gap: 6px;
+        }
+
+        .field label {
+            color: var(--muted);
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .field input,
+        .field select {
+            width: 100%;
+            padding: 12px;
+
+            background: #0b0d0d;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+
+            color: white;
+            outline: none;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            border-color: var(--accent);
+        }
+
+
+        /* =========================
+           COMPARE BUTTON
+           ========================= */
+
+        .compare-button {
+            width: 100%;
+            padding: 16px;
+
+            border: 0;
+            border-radius: 8px;
+
+            background: var(--accent);
+            color: #080909;
+
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 1px;
+
+            cursor: pointer;
+        }
+
+        .compare-button:hover {
+            opacity: .9;
+        }
+
+
+        /* =========================
+           RESULT
+           ========================= */
+
+        .result {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .result-header {
+            text-align: center;
+
+            padding: 35px 25px;
+
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+        }
+
+        .result-header h2 {
+            font-size: 30px;
+        }
+
+        .result-header p {
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .winner {
+            margin-top: 18px;
+
+            color: var(--accent);
+
+            font-size: 32px;
+            font-weight: 900;
+        }
+
+
+        /* =========================
+           SCORE
+           ========================= */
+
+        .score-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin-top: 18px;
+        }
+
+        .score-card {
+            padding: 25px;
+
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+
+            text-align: center;
+        }
+
+        .score-card h3 {
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+
+        .score-number {
+            margin-top: 10px;
+
+            font-size: 50px;
+            font-weight: 900;
+
+            color: var(--accent);
+        }
+
+        .score-label {
+            color: var(--muted);
+            font-size: 9px;
+            letter-spacing: 2px;
+        }
+
+
+        /* =========================
+           COMPARISON TABLE
+           ========================= */
+
+        .comparison-table-wrapper {
+            margin-top: 18px;
+
+            overflow-x: auto;
+
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            min-width: 650px;
+
+            border-collapse: collapse;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 16px;
+
+            border-bottom: 1px solid var(--border);
+
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .comparison-table th {
+            color: var(--muted);
+            font-size: 9px;
+            letter-spacing: 1px;
+        }
+
+        .comparison-table td:first-child {
+            color: var(--muted);
+            font-weight: 700;
+        }
+
+        .winner-cell {
+            color: var(--accent) !important;
+            font-weight: 900;
+        }
+
+        .tie-cell {
+            color: white !important;
+            font-weight: 800;
+        }
+
+
+        /* =========================
+           VERDICT
+           ========================= */
+
+        .verdict-card {
+            margin-top: 18px;
+
+            padding: 25px;
+
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+        }
+
+        .verdict-card h3 {
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+
+        .verdict-text {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .reset-button {
+            width: 100%;
+            margin-top: 12px;
+            padding: 12px;
+
+            background: transparent;
+
+            border: 1px solid var(--border);
+            border-radius: 7px;
+
+            color: var(--muted);
+
+            cursor: pointer;
+        }
+
+        .reset-button:hover {
+            border-color: var(--accent);
+            color: white;
+        }
+
+
+        /* =========================
+           MOBILE
+           ========================= */
+
+        @media (max-width: 800px) {
+
+            .cars-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .vs-box {
+                height: 35px;
+            }
+
+            .score-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= HEADER ================= -->
+
+<header class="topbar">
+
+    <div class="brand">
+
+        <img
+            src="../torque-theory-logo.png"
+            alt="Torque Theory">
+
+        <div>
+
+            <h1>THE TORQUE THEORY</h1>
+
+            <span>YOUR DIGITAL GARAGE</span>
+
+        </div>
+
+    </div>
+
+
+    <button
+        class="menu-btn"
+        onclick="toggleMenu()">
+
+        ☰
+
+    </button>
+
+
+    <nav id="mainNav">
+
+        <a href="../index.html">
+            Dashboard
+        </a>
+
+        <a href="../index.html#garage">
+            My Garage
+        </a>
+
+        <a href="../index.html#maintenance">
+            Maintenance
+        </a>
+
+        <a href="../index.html#tools">
+            Tools
+        </a>
+
+    </nav>
+
+</header>
+
+
+<!-- ================= HERO ================= -->
+
+<section class="comparison-hero">
+
+    <div class="comparison-hero-inner">
+
+        <p class="eyebrow">
+            TORQUE THEORY TOOLS
+        </p>
+
+        <h2>
+            CAR<br>
+            <span>COMPARISON.</span>
+        </h2>
+
+        <p class="hero-description">
+            Put two cars head-to-head. Compare the numbers,
+            see the strengths, and find out which one makes
+            more sense for you.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ================= CONTENT ================= -->
+
+<main class="comparison-content">
+
+
+    <!-- ================= CAR INPUTS ================= -->
+
+    <div class="cars-grid">
+
+
+        <!-- CAR A -->
+
+        <div class="car-card car-a">
+
+            <span class="car-label">
+                CAR A
+            </span>
+
+            <h2>
+                FIRST CAR
+            </h2>
+
+
+            <div class="input-grid">
+
+
+                <div class="field">
+
+                    <label>
+                        MAKE / MODEL
+                    </label>
+
+                    <input
+                        type="text"
+                        id="carAName"
+                        placeholder="Example: Honda City">
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        PRICE (₹)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="carAPrice"
+                        placeholder="1200000">
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        ENGINE (CC)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="carAEngine"
+                        placeholder="1498">
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        POWER (PS)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="carAPower"
+                        placeholder="121">
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        TORQUE (NM)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="carATorque"
+                        placeholder="145">
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        MILEAGE (KM/L)
+                    </label>
+
+                    <input
+                        type="number"
+                        step="0.1"
+                        id="carAMileage"
+                        placeholder="17.8">
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        TRANSMISSION
+                    </label>
+
+                    <select id="carATransmission">
+
+                        <option value="">
+                            Select
+                        </option>
+
+                        <option>
+                            Manual
+                        </option>
+
+                        <option>
+                            AMT
+                        </option>
+
+                        <option>
+                            CVT
+                        </option>
+
+                        <option>
+                            DCT
+                        </option>
+
+                        <option>
+                            Automatic
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        GROUND CLEARANCE (MM)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="carAClearance"
+                        placeholder="165">
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        BOOT SPACE (L)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="carABoot"
+                        placeholder="506">
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        SAFETY RATING (/5)
+                    </label>
+
+                    <input
+                        type="number"
+                        min="0"
+                        max="5"
+                        step="0.1"
+                        id="carASafety"
+                        placeholder="5">
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        EST. ANNUAL MAINTENANCE (₹)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="carAMaintenance"
+                        placeholder="15000">
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- VS -->
+
+        <div class="vs-box">
+            VS
+        </div>
+
+
+        <!-- CAR B -->
+
+        <div class="car-card car-b">
+
+            <span class="car-label">
+                CAR B
+            </span>
+
+            <h2>
+                SECOND CAR
+            </h2>
+
+
+            <div class="input-grid">
+
+
+                <div class="field">
+
+                    <label>
+                        MAKE / MODEL
+                    </label>
+
+                    <input
+                        type="text"
+                        id="carBName"
+                        placeholder="Example: Hyundai Verna">
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        PRICE (₹)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="carBPrice"
+                        placeholder="1300000">
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        ENGINE (CC)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="carBEngine"
+                        placeholder="1497">
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        POWER (PS)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="carBPower"
+                        placeholder="160">
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        TORQUE (NM)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="carBTorque"
+                        placeholder="253">
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        MILEAGE (KM/L)
+                    </label>
+
+                    <input
+                        type="number"
+                        step="0.1"
+                        id="carBMileage"
+                        placeholder="19.6">
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        TRANSMISSION
+                    </label>
+
+                    <select id="carBTransmission">
+
+                        <option value="">
+                            Select
+                        </option>
+
+                        <option>
+                            Manual
+                        </option>
+
+                        <option>
+                            AMT
+                        </option>
+
+                        <option>
+                            CVT
+                        </option>
+
+                        <option>
+                            DCT
+                        </option>
+
+                        <option>
+                            Automatic
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        GROUND CLEARANCE (MM)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="carBClearance"
+                        placeholder="170">
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        BOOT SPACE (L)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="carBBoot"
+                        placeholder="528">
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        SAFETY RATING (/5)
+                    </label>
+
+                    <input
+                        type="number"
+                        min="0"
+                        max="5"
+                        step="0.1"
+                        id="carBSafety"
+                        placeholder="5">
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        EST. ANNUAL MAINTENANCE (₹)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="carBMaintenance"
+                        placeholder="18000">
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= BUTTON ================= -->
+
+    <button
+        class="compare-button"
+        onclick="compareCars()">
+
+        COMPARE CARS
+
+    </button>
+
+
+    <!-- ================= RESULTS ================= -->
+
+    <section
+        class="result"
+        id="result">
+
+
+        <div class="result-header">
+
+            <h2>
+                COMPARISON RESULT
+            </h2>
+
+            <p>
+                Based on the specifications you entered.
+            </p>
+
+            <div
+                class="winner"
+                id="winner">
+
+            </div>
+
+        </div>
+
+
+        <!-- SCORE -->
+
+        <div class="score-grid">
+
+            <div class="score-card">
+
+                <h3 id="scoreAName">
+                    CAR A
+                </h3>
+
+                <div
+                    class="score-number"
+                    id="scoreA">
+
+                    0
+
+                </div>
+
+                <div class="score-label">
+                    OVERALL SCORE / 100
+                </div>
+
+            </div>
+
+
+            <div class="score-card">
+
+                <h3 id="scoreBName">
+                    CAR B
+                </h3>
+
+                <div
+                    class="score-number"
+                    id="scoreB">
+
+                    0
+
+                </div>
+
+                <div class="score-label">
+                    OVERALL SCORE / 100
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- TABLE -->
+
+        <div class="comparison-table-wrapper">
+
+            <table class="comparison-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            SPECIFICATION
+                        </th>
+
+                        <th id="tableNameA">
+                            CAR A
+                        </th>
+
+                        <th id="tableNameB">
+                            CAR B
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="comparisonBody">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- VERDICT -->
+
+        <div class="verdict-card">
+
+            <h3>
+                TORQUE THEORY VERDICT
+            </h3>
+
+            <p
+                class="verdict-text"
+                id="verdictText">
+
+            </p>
+
+        </div>
+
+
+        <button
+            class="reset-button"
+            onclick="resetComparison()">
+
+            START NEW COMPARISON
+
+        </button>
+
+
+    </section>
+
+</main>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <img
+        src="../torque-theory-logo.png"
+        alt="Torque Theory">
+
+    <h3>
+        THE TORQUE THEORY
+    </h3>
+
+    <p>
+        BUILT BY AUTOHEADS.
+    </p>
+
+    <div class="footer-line"></div>
+
+    <small>
+        © 2026 The Torque Theory
+    </small>
+
+</footer>
+
+
+<script>
+
+
+/* ================= MENU ================= */
+
+function toggleMenu() {
+
+    document
+        .getElementById("mainNav")
+        .classList.toggle("show");
+
+}
+
+
+/* ================= HELPERS ================= */
+
+function getNumber(id) {
+
+    return Number(
+        document.getElementById(id).value
+    ) || 0;
+
+}
+
+
+function getText(id) {
+
+    return (
+        document.getElementById(id).value.trim()
+        || "Car"
+    );
+
+}
+
+
+function money(value) {
+
+    return "₹" +
+        Number(value).toLocaleString("en-IN");
+
+}
+
+
+/* ================= READ CAR ================= */
+
+function getCar(prefix) {
+
+    return {
+
+        name:
+            getText(prefix + "Name"),
+
+        price:
+            getNumber(prefix + "Price"),
+
+        engine:
+            getNumber(prefix + "Engine"),
+
+        power:
+            getNumber(prefix + "Power"),
+
+        torque:
+            getNumber(prefix + "Torque"),
+
+        mileage:
+            getNumber(prefix + "Mileage"),
+
+        transmission:
+            document.getElementById(
+                prefix + "Transmission"
+            ).value || "—",
+
+        clearance:
+            getNumber(prefix + "Clearance"),
+
+        boot:
+            getNumber(prefix + "Boot"),
+
+        safety:
+            getNumber(prefix + "Safety"),
+
+        maintenance:
+            getNumber(prefix + "Maintenance")
+
+    };
+
+}
+
+
+/* ================= SCORE ================= */
+
+/*
+    Scoring philosophy:
+
+    Power          = 15
+    Torque         = 15
+    Mileage        = 15
+    Safety         = 15
+    Ground         = 10
+    Boot           = 10
+    Price          = 10
+    Maintenance    = 10
+
+    Total          = 100
+*/
+
+
+function calculateScores(a, b) {
+
+    let scoreA = 0;
+    let scoreB = 0;
+
+
+    /* POWER */
+
+    if (a.power || b.power) {
+
+        const total =
+            a.power + b.power;
+
+        if (total > 0) {
+
+            scoreA +=
+                (a.power / total) * 15;
+
+            scoreB +=
+                (b.power / total) * 15;
+
+        }
+
+    }
+
+
+    /* TORQUE */
+
+    if (a.torque || b.torque) {
+
+        const total =
+            a.torque + b.torque;
+
+        if (total > 0) {
+
+            scoreA +=
+                (a.torque / total) * 15;
+
+            scoreB +=
+                (b.torque / total) * 15;
+
+        }
+
+    }
+
+
+    /* MILEAGE */
+
+    if (a.mileage || b.mileage) {
+
+        const total =
+            a.mileage + b.mileage;
+
+        if (total > 0) {
+
+            scoreA +=
+                (a.mileage / total) * 15;
+
+            scoreB +=
+                (b.mileage / total) * 15;
+
+        }
+
+    }
+
+
+    /* SAFETY */
+
+    if (a.safety || b.safety) {
+
+        const total =
+            a.safety + b.safety;
+
+        if (total > 0) {
+
+            scoreA +=
+                (a.safety / total) * 15;
+
+            scoreB +=
+                (b.safety / total) * 15;
+
+        }
+
+    }
+
+
+    /* GROUND CLEARANCE */
+
+    if (a.clearance || b.clearance) {
+
+        const total =
+            a.clearance + b.clearance;
+
+        if (total > 0) {
+
+            scoreA +=
+                (a.clearance / total) * 10;
+
+            scoreB +=
+                (b.clearance / total) * 10;
+
+        }
+
+    }
+
+
+    /* BOOT */
+
+    if (a.boot || b.boot) {
+
+        const total =
+            a.boot + b.boot;
+
+        if (total > 0) {
+
+            scoreA +=
+                (a.boot / total) * 10;
+
+            scoreB +=
+                (b.boot / total) * 10;
+
+        }
+
+    }
+
+
+    /* PRICE — LOWER IS BETTER */
+
+    if (a.price || b.price) {
+
+        const total =
+            a.price + b.price;
+
+        if (total > 0) {
+
+            scoreA +=
+                (b.price / total) * 10;
+
+            scoreB +=
+                (a.price / total) * 10;
+
+        }
+
+    }
+
+
+    /* MAINTENANCE — LOWER IS BETTER */
+
+    if (a.maintenance || b.maintenance) {
+
+        const total =
+            a.maintenance + b.maintenance;
+
+        if (total > 0) {
+
+            scoreA +=
+                (b.maintenance / total) * 10;
+
+            scoreB +=
+                (a.maintenance / total) * 10;
+
+        }
+
+    }
+
+
+    return {
+
+        a: Math.round(scoreA),
+
+        b: Math.round(scoreB)
+
+    };
+
+}
+
+
+/* ================= COMPARE ================= */
+
+function compareCars() {
+
+    const a =
+        getCar("carA");
+
+    const b =
+        getCar("carB");
+
+
+    if (
+        !a.name ||
+        !b.name
+    ) {
+
+        alert(
+            "Enter both car names before comparing."
+        );
+
+        return;
+
+    }
+
+
+    const scores =
+        calculateScores(a, b);
+
+
+    /* ================= WINNER ================= */
+
+    let winnerText;
+
+
+    if (scores.a > scores.b) {
+
+        winnerText =
+            "🏆 " + a.name + " WINS";
+
+    }
+
+    else if (scores.b > scores.a) {
+
+        winnerText =
+            "🏆 " + b.name + " WINS";
+
+    }
+
+    else {
+
+        winnerText =
+            "🤝 IT'S A TIE";
+
+    }
+
+
+    document.getElementById(
+        "winner"
+    ).textContent = winnerText;
+
+
+    document.getElementById(
+        "scoreAName"
+    ).textContent = a.name;
+
+
+    document.getElementById(
+        "scoreBName"
+    ).textContent = b.name;
+
+
+    document.getElementById(
+        "scoreA"
+    ).textContent = scores.a;
+
+
+    document.getElementById(
+        "scoreB"
+    ).textContent = scores.b;
+
+
+    document.getElementById(
+        "tableNameA"
+    ).textContent = a.name;
+
+
+    document.getElementById(
+        "tableNameB"
+    ).textContent = b.name;
+
+
+    /* ================= TABLE ================= */
+
+    const rows = [
+
+        {
+            label: "Price",
+            a: money(a.price),
+            b: money(b.price),
+            higher: false,
+            values: [a.price, b.price]
+        },
+
+        {
+            label: "Engine",
+            a: a.engine + " cc",
+            b: b.engine + " cc",
+            higher: true,
+            values: [a.engine, b.engine]
+        },
+
+        {
+            label: "Power",
+            a: a.power + " PS",
+            b: b.power + " PS",
+            higher: true,
+            values: [a.power, b.power]
+        },
+
+        {
+            label: "Torque",
+            a: a.torque + " Nm",
+            b: b.torque + " Nm",
+            higher: true,
+            values: [a.torque, b.torque]
+        },
+
+        {
+            label: "Mileage",
+            a: a.mileage + " km/l",
+            b: b.mileage + " km/l",
+            higher: true,
+            values: [a.mileage, b.mileage]
+        },
+
+        {
+            label: "Transmission",
+            a: a.transmission,
+            b: b.transmission,
+            higher: null,
+            values: [0, 0]
+        },
+
+        {
+            label: "Ground Clearance",
+            a: a.clearance + " mm",
+            b: b.clearance + " mm",
+            higher: true,
+            values: [a.clearance, b.clearance]
+        },
+
+        {
+            label: "Boot Space",
+            a: a.boot + " L",
+            b: b.boot + " L",
+            higher: true,
+            values: [a.boot, b.boot]
+        },
+
+        {
+            label: "Safety",
+            a: a.safety + " / 5",
+            b: b.safety + " / 5",
+            higher: true,
+            values: [a.safety, b.safety]
+        },
+
+        {
+            label: "Annual Maintenance",
+            a: money(a.maintenance),
+            b: money(b.maintenance),
+            higher: false,
+            values: [a.maintenance, b.maintenance]
+        }
+
+    ];
+
+
+    let tableHTML = "";
+
+
+    rows.forEach(row => {
+
+        let classA = "";
+        let classB = "";
+
+
+        if (
+            row.higher !== null &&
+            row.values[0] !== 0 &&
+            row.values[1] !== 0
+        ) {
+
+            if (
+                row.higher &&
+                row.values[0] > row.values[1]
+            ) {
+
+                classA = "winner-cell";
+
+            }
+
+            else if (
+                row.higher &&
+                row.values[1] > row.values[0]
+            ) {
+
+                classB = "winner-cell";
+
+            }
+
+            else if (
+                !row.higher &&
+                row.values[0] < row.values[1]
+            ) {
+
+                classA = "winner-cell";
+
+            }
+
+            else if (
+                !row.higher &&
+                row.values[1] < row.values[0]
+            ) {
+
+                classB = "winner-cell";
+
+            }
+
+            else {
+
+                classA = "tie-cell";
+                classB = "tie-cell";
+
+            }
+
+        }
+
+
+        tableHTML += `
+
+            <tr>
+
+                <td>
+                    ${row.label}
+                </td>
+
+                <td class="${classA}">
+                    ${row.a}
+                </td>
+
+                <td class="${classB}">
+                    ${row.b}
+                </td>
+
+            </tr>
+
+        `;
+
+    });
+
+
+    document.getElementById(
+        "comparisonBody"
+    ).innerHTML = tableHTML;
+
+
+    /* ================= VERDICT ================= */
+
+    let verdict = "";
+
+
+    if (scores.a > scores.b) {
+
+        verdict =
+            `<strong>${a.name}</strong> has the higher overall score. ` +
+            `It performs better across the combined performance, efficiency, practicality, ` +
+            `safety, price and ownership-cost criteria entered above.`;
+
+    }
+
+    else if (scores.b > scores.a) {
+
+        verdict =
+            `<strong>${b.name}</strong> has the higher overall score. ` +
+            `It performs better across the combined performance, efficiency, practicality, ` +
+            `safety, price and ownership-cost criteria entered above.`;
+
+    }
+
+    else {
+
+        verdict =
+            `Both cars received the same overall score. ` +
+            `Your final choice should come down to driving needs, condition, ` +
+            `features, resale value and personal preference.`;
+
+    }
+
+
+    document.getElementById(
+        "verdictText"
+    ).innerHTML = verdict;
+
+
+    /* ================= SHOW ================= */
+
+    const result =
+        document.getElementById("result");
+
+
+    result.classList.add("show");
+
+
+    result.scrollIntoView({
+        behavior: "smooth"
+    });
+
+}
+
+
+/* ================= RESET ================= */
+
+function resetComparison() {
+
+    document
+        .querySelectorAll(
+            "input"
+        )
+        .forEach(input => {
+
+            input.value = "";
+
+        });
+
+
+    document
+        .querySelectorAll(
+            "select"
+        )
+        .forEach(select => {
+
+            select.selectedIndex = 0;
+
+        });
+
+
+    document
+        .getElementById("result")
+        .classList.remove("show");
+
+
+    window.scrollTo({
+
+        top: 0,
+
+        behavior: "smooth"
+
+    });
+
+}
+
+</script>
+
+
+</body>
+
+</html>
