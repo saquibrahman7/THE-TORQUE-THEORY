@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Fuel Economy | The Torque Theory</title>
+
+    <link rel="stylesheet" href="../style.css">
+
+    <style>
+        .fuel-hero {
+            padding: 75px 5% 55px;
+            background:
+                radial-gradient(
+                    circle at 80% 40%,
+                    rgba(214,169,40,.12),
+                    transparent 35%
+                );
+        }
+
+        .fuel-hero-inner {
+            max-width: 1180px;
+            margin: auto;
+        }
+
+        .fuel-hero h2 {
+            font-size: clamp(42px, 7vw, 76px);
+            line-height: .95;
+            letter-spacing: -3px;
+        }
+
+        .fuel-hero h2 span {
+            color: var(--accent);
+        }
+
+        .hero-description {
+            max-width: 650px;
+            margin-top: 20px;
+            color: var(--muted);
+        }
+
+        .fuel-content {
+            width: min(1180px, 90%);
+            margin: auto;
+            padding: 50px 0 90px;
+        }
+
+        .calculator-card,
+        .result-header,
+        .trip-card,
+        .monthly-card {
+            padding: 28px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+        }
+
+        .calculator-card h2 {
+            margin-bottom: 5px;
+            font-size: 21px;
+        }
+
+        .section-description {
+            margin-bottom: 24px;
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .field {
+            display: grid;
+            gap: 6px;
+        }
+
+        .field label {
+            color: var(--muted);
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .field input,
+        .field select {
+            width: 100%;
+            padding: 13px;
+            background: #0b0d0d;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            color: white;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            border-color: var(--accent);
+        }
+
+        .calculate-button {
+            width: 100%;
+            margin-top: 22px;
+            padding: 16px;
+            border: 0;
+            border-radius: 8px;
+            background: var(--accent);
+            color: #080909;
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            cursor: pointer;
+        }
+
+        .calculate-button:hover {
+            opacity: .9;
+        }
+
+        .results {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .result-header {
+            text-align: center;
+        }
+
+        .result-header h2 {
+            font-size: 27px;
+        }
+
+        .result-header p {
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 18px;
+        }
+
+        .result-card {
+            padding: 22px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .result-value {
+            margin-top: 8px;
+            color: var(--accent);
+            font-size: 30px;
+            font-weight: 900;
+        }
+
+        .result-label {
+            color: var(--muted);
+            font-size: 9px;
+            letter-spacing: 1px;
+        }
+
+        .trip-card,
+        .monthly-card {
+            margin-top: 18px;
+        }
+
+        .trip-card h3,
+        .monthly-card h3 {
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .trip-result-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .trip-item {
+            padding: 15px;
+            background: #0b0d0d;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .trip-item span {
+            display: block;
+            color: var(--muted);
+            font-size: 9px;
+            letter-spacing: 1px;
+        }
+
+        .trip-item strong {
+            display: block;
+            margin-top: 6px;
+            font-size: 18px;
+        }
+
+        .monthly-result {
+            color: var(--accent);
+            font-size: 38px;
+            font-weight: 900;
+        }
+
+        .monthly-description {
+            margin-top: 5px;
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .efficiency-message {
+            margin-top: 18px;
+            padding: 18px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .efficiency-message strong {
+            color: var(--accent);
+        }
+
+        .reset-button {
+            width: 100%;
+            margin-top: 12px;
+            padding: 12px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            color: var(--muted);
+            cursor: pointer;
+        }
+
+        .reset-button:hover {
+            border-color: var(--accent);
+            color: white;
+        }
+
+        @media (max-width: 800px) {
+            .input-grid,
+            .result-grid,
+            .trip-result-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+<header class="topbar">
+
+    <div class="brand">
+
+        <img
+            src="../torque-theory-logo.png"
+            alt="Torque Theory">
+
+        <div>
+
+            <h1>THE TORQUE THEORY</h1>
+
+            <span>YOUR DIGITAL GARAGE</span>
+
+        </div>
+
+    </div>
+
+    <button
+        class="menu-btn"
+        onclick="toggleMenu()">
+        ☰
+    </button>
+
+    <nav id="mainNav">
+
+        <a href="../index.html">
+            Dashboard
+        </a>
+
+        <a href="../index.html#garage">
+            My Garage
+        </a>
+
+        <a href="../index.html#maintenance">
+            Maintenance
+        </a>
+
+        <a href="../index.html#tools">
+            Tools
+        </a>
+
+    </nav>
+
+</header>
+
+
+<section class="fuel-hero">
+
+    <div class="fuel-hero-inner">
+
+        <p class="eyebrow">
+            TORQUE THEORY TOOLS
+        </p>
+
+        <h2>
+            FUEL<br>
+            <span>ECONOMY.</span>
+        </h2>
+
+        <p class="hero-description">
+            Calculate your vehicle's real mileage,
+            fuel cost per kilometre, trip cost and
+            estimated monthly fuel spending.
+        </p>
+
+    </div>
+
+</section>
+
+
+<main class="fuel-content">
+
+
+    <section class="calculator-card">
+
+        <h2>
+            01 — ENTER YOUR DATA
+        </h2>
+
+        <p class="section-description">
+            For the most accurate result, use actual fuel
+            consumed and distance travelled.
+        </p>
+
+
+        <div class="input-grid">
+
+
+            <div class="field">
+
+                <label>
+                    VEHICLE NAME
+                </label>
+
+                <input
+                    type="text"
+                    id="vehicleName"
+                    placeholder="Example: Swift VDI">
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    FUEL TYPE
+                </label>
+
+                <select id="fuelType">
+
+                    <option value="">
+                        Select fuel
+                    </option>
+
+                    <option value="Petrol">
+                        Petrol
+                    </option>
+
+                    <option value="Diesel">
+                        Diesel
+                    </option>
+
+                    <option value="CNG">
+                        CNG
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    DISTANCE TRAVELLED (KM)
+                </label>
+
+                <input
+                    type="number"
+                    id="distance"
+                    min="0"
+                    step="0.1"
+                    placeholder="500">
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    FUEL USED (LITRES)
+                </label>
+
+                <input
+                    type="number"
+                    id="fuelUsed"
+                    min="0"
+                    step="0.01"
+                    placeholder="35">
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    FUEL PRICE (₹ / LITRE)
+                </label>
+
+                <input
+                    type="number"
+                    id="fuelPrice"
+                    min="0"
+                    step="0.01"
+                    placeholder="105">
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    MONTHLY DISTANCE (KM)
+                </label>
+
+                <input
+                    type="number"
+                    id="monthlyDistance"
+                    min="0"
+                    step="1"
+                    placeholder="1200">
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="calculate-button"
+            onclick="calculateFuel()">
+
+            CALCULATE FUEL ECONOMY
+
+        </button>
+
+    </section>
+
+
+    <section
+        class="results"
+        id="results">
+
+
+        <div class="result-header">
+
+            <h2 id="resultVehicle">
+                FUEL REPORT
+            </h2>
+
+            <p id="resultFuel">
+                —
+            </p>
+
+        </div>
+
+
+        <div class="result-grid">
+
+
+            <div class="result-card">
+
+                <div class="result-label">
+                    FUEL ECONOMY
+                </div>
+
+                <div
+                    class="result-value"
+                    id="economy">
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="result-card">
+
+                <div class="result-label">
+                    LITRES / 100 KM
+                </div>
+
+                <div
+                    class="result-value"
+                    id="litres100">
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="result-card">
+
+                <div class="result-label">
+                    FUEL COST / KM
+                </div>
+
+                <div
+                    class="result-value"
+                    id="costPerKm">
+                    —
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="trip-card">
+
+            <h3>
+                YOUR TEST RUN
+            </h3>
+
+            <div class="trip-result-grid">
+
+                <div class="trip-item">
+
+                    <span>
+                        DISTANCE
+                    </span>
+
+                    <strong id="tripDistance">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="trip-item">
+
+                    <span>
+                        FUEL USED
+                    </span>
+
+                    <strong id="tripFuel">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="trip-item">
+
+                    <span>
+                        FUEL COST
+                    </span>
+
+                    <strong id="tripCost">
+                        —
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="monthly-card">
+
+            <h3>
+                ESTIMATED MONTHLY FUEL COST
+            </h3>
+
+            <div
+                class="monthly-result"
+                id="monthlyCost">
+                —
+            </div>
+
+            <p class="monthly-description">
+                Based on the monthly distance you entered.
+            </p>
+
+        </div>
+
+
+        <div class="efficiency-message">
+
+            <p id="efficiencyMessage">
+                —
+            </p>
+
+        </div>
+
+
+        <button
+            class="reset-button"
+            onclick="resetFuel()">
+
+            START NEW CALCULATION
+
+        </button>
+
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    <img
+        src="../torque-theory-logo.png"
+        alt="Torque Theory">
+
+    <h3>
+        THE TORQUE THEORY
+    </h3>
+
+    <p>
+        BUILT BY AUTOHEADS.
+    </p>
+
+    <div class="footer-line"></div>
+
+    <small>
+        © 2026 The Torque Theory
+    </small>
+
+</footer>
+
+
+<script>
+
+function toggleMenu() {
+
+    document
+        .getElementById("mainNav")
+        .classList.toggle("show");
+
+}
+
+
+function money(value) {
+
+    return "₹" +
+        Number(value).toLocaleString(
+            "en-IN",
+            {
+                maximumFractionDigits: 2
+            }
+        );
+
+}
+
+
+function calculateFuel() {
+
+    const vehicle =
+        document
+            .getElementById("vehicleName")
+            .value
+            .trim() || "YOUR VEHICLE";
+
+
+    const fuelType =
+        document
+            .getElementById("fuelType")
+            .value;
+
+
+    const distance =
+        Number(
+            document
+                .getElementById("distance")
+                .value
+        );
+
+
+    const fuelUsed =
+        Number(
+            document
+                .getElementById("fuelUsed")
+                .value
+        );
+
+
+    const fuelPrice =
+        Number(
+            document
+                .getElementById("fuelPrice")
+                .value
+        );
+
+
+    const monthlyDistance =
+        Number(
+            document
+                .getElementById("monthlyDistance")
+                .value
+        );
+
+
+    if (!fuelType) {
+
+        alert("Please select your fuel type.");
+
+        return;
+
+    }
+
+
+    if (
+        distance <= 0 ||
+        fuelUsed <= 0 ||
+        fuelPrice <= 0
+    ) {
+
+        alert(
+            "Please enter valid distance, fuel used and fuel price."
+        );
+
+        return;
+
+    }
+
+
+    const economy =
+        distance / fuelUsed;
+
+
+    const litres100 =
+        (fuelUsed / distance) * 100;
+
+
+    const costPerKm =
+        fuelPrice / economy;
+
+
+    const tripCost =
+        fuelUsed * fuelPrice;
+
+
+    const monthlyCost =
+        monthlyDistance > 0
+            ? (monthlyDistance / economy) * fuelPrice
+            : 0;
+
+
+    document.getElementById(
+        "resultVehicle"
+    ).textContent =
+        vehicle.toUpperCase();
+
+
+    document.getElementById(
+        "resultFuel"
+    ).textContent =
+        fuelType +
+        " • REAL-WORLD FUEL REPORT";
+
+
+    document.getElementById(
+        "economy"
+    ).textContent =
+        economy.toFixed(2) + " km/l";
+
+
+    document.getElementById(
+        "litres100"
+    ).textContent =
+        litres100.toFixed(2);
+
+
+    document.getElementById(
+        "costPerKm"
+    ).textContent =
+        money(costPerKm);
+
+
+    document.getElementById(
+        "tripDistance"
+    ).textContent =
+        distance.toLocaleString("en-IN") +
+        " KM";
+
+
+    document.getElementById(
+        "tripFuel"
+    ).textContent =
+        fuelUsed.toFixed(2) +
+        " L";
+
+
+    document.getElementById(
+        "tripCost"
+    ).textContent =
+        money(tripCost);
+
+
+    document.getElementById(
+        "monthlyCost"
+    ).textContent =
+        monthlyDistance > 0
+            ? money(monthlyCost)
+            : "—";
+
+
+    let message;
+
+
+    if (economy >= 20) {
+
+        message =
+            "<strong>EXCELLENT EFFICIENCY.</strong> " +
+            "Your vehicle is returning very good fuel economy.";
+
+    }
+
+    else if (economy >= 15) {
+
+        message =
+            "<strong>GOOD EFFICIENCY.</strong> " +
+            "Your fuel economy is in a solid range.";
+
+    }
+
+    else if (economy >= 10) {
+
+        message =
+            "<strong>AVERAGE EFFICIENCY.</strong> " +
+            "Driving conditions and vehicle maintenance can affect this.";
+
+    }
+
+    else {
+
+        message =
+            "<strong>HIGH FUEL CONSUMPTION.</strong> " +
+            "Check tyre pressure, driving style and vehicle condition.";
+
+    }
+
+
+    document.getElementById(
+        "efficiencyMessage"
+    ).innerHTML = message;
+
+
+    const results =
+        document.getElementById("results");
+
+
+    results.classList.add("show");
+
+
+    results.scrollIntoView({
+        behavior: "smooth"
+    });
+
+}
+
+
+function resetFuel() {
+
+    document
+        .querySelectorAll("input")
+        .forEach(input => {
+
+            input.value = "";
+
+        });
+
+
+    document
+        .getElementById("fuelType")
+        .selectedIndex = 0;
+
+
+    document
+        .getElementById("results")
+        .classList.remove("show");
+
+
+    window.scrollTo({
+
+        top: 0,
+
+        behavior: "smooth"
+
+    });
+
+}
+
+</script>
+
+
+</body>
+
+</html>
